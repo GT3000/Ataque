@@ -8,9 +8,14 @@ public class Player : MonoBehaviour
 
     [SerializeField] protected float speed;
     [SerializeField] protected GameObject projectile;
+    [SerializeField] protected GameObject[] firepowerProjectiles;
+    [SerializeField] protected GameObject[] energyProjectiles;
+    [SerializeField] protected GameObject[] missileProjectiles;
+    protected int currentUpgrade;
+    [SerializeField] protected int upgradeLevel;
     [SerializeField] protected float fireRate;
     [SerializeField] protected int maxHealth;
-    protected int currentHealth;
+    [SerializeField] protected int currentHealth;
     [SerializeField] protected int lives;
     protected float currentTime;
     protected GameObject projectileGroup;
@@ -24,12 +29,14 @@ public class Player : MonoBehaviour
     {
         GameEvents.PlayerDestroyed += Death;
         GameEvents.PlayerHit += TakeDamage;
+        GameEvents.PowerupPickedUp += SetUpgrade;
     }
 
     private void OnDisable()
     {
         GameEvents.PlayerDestroyed -= Death;
         GameEvents.PlayerHit -= TakeDamage;
+        GameEvents.PowerupPickedUp -= SetUpgrade;
     }
 
     void Start()
@@ -72,6 +79,85 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void SetUpgrade(int powerupId)
+    {
+        //TODO set powerup by it's ID and upgrade if it's not at max otherwise switch
+        switch (powerupId)
+        {
+            case 0:
+                //Firepower
+                if (currentUpgrade == 0)
+                {
+                    if (upgradeLevel < firepowerProjectiles.Length - 1)
+                    {
+                        upgradeLevel++;
+                        projectile = firepowerProjectiles[upgradeLevel];
+                    }
+                    else if (currentUpgrade == 1 && upgradeLevel >= firepowerProjectiles.Length - 1)
+                    {
+                        //TODO Point Bonus
+                        print("Point Bonus");
+                    }
+                }
+                else
+                {
+                    currentUpgrade = 0;
+                    upgradeLevel = 0;
+                    projectile = firepowerProjectiles[0];
+                }
+                
+                break;
+            
+            case 1:
+                //Energy
+                if (currentUpgrade == 1)
+                {
+                    if (upgradeLevel < energyProjectiles.Length - 1)
+                    {
+                        upgradeLevel++;
+                        projectile = energyProjectiles[upgradeLevel];
+                    }
+                    else if (upgradeLevel >= energyProjectiles.Length - 1)
+                    {
+                        //TODO Point Bonus
+                        print("Point Bonus");
+                    }
+                }
+                else
+                {
+                    currentUpgrade = 1;
+                    upgradeLevel = 0;
+                    projectile = energyProjectiles[0];
+                }
+                
+                break;
+                
+            case 2:
+                //Missile
+                if (currentUpgrade == 2)
+                {
+                    if (upgradeLevel < missileProjectiles.Length - 1)
+                    {
+                        upgradeLevel++;
+                        projectile = missileProjectiles[upgradeLevel];
+                    }
+                    else if (upgradeLevel >= missileProjectiles.Length - 1)
+                    {
+                        //TODO Point Bonus
+                        print("Point Bonus");
+                    }
+                }
+                else
+                {
+                    currentUpgrade = 2;
+                    upgradeLevel = 0;
+                    projectile = missileProjectiles[0];
+                }
+                
+                break;
+        }
+    }
+
     private void LateUpdate()
     {
         Boundaries();
@@ -108,6 +194,9 @@ public class Player : MonoBehaviour
         if (currentHealth <= 0)
         {
             lives--;
+            currentHealth = maxHealth;
+            
+            print("New life.");
         }
         
         if (lives <= 0)
@@ -118,6 +207,7 @@ public class Player : MonoBehaviour
 
     private void Death()
     {
+        GameEvents.EnemyDestroyed();
         //TODO Explosion VFX
         //TODO end game logic
         Destroy(gameObject);
