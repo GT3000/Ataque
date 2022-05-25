@@ -7,6 +7,13 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] protected float speed;
+    [SerializeField] protected float speedBoostSpeed;
+    [SerializeField] protected float speedBoostDuration;
+    protected float speedDurationTimer;
+    protected float currentSpeed;
+    protected bool speedBoostActive;
+    [SerializeField] protected GameObject shield;
+    protected bool shieldActive;
     [SerializeField] protected GameObject projectile;
     [SerializeField] protected GameObject[] firepowerProjectiles;
     [SerializeField] protected GameObject[] energyProjectiles;
@@ -44,6 +51,7 @@ public class Player : MonoBehaviour
         transform.position = Vector3.zero;
         projectileGroup = new GameObject("Projectiles");
         currentHealth = maxHealth;
+        currentSpeed = speed;
 
         if (Camera.main != null)
         {
@@ -55,17 +63,23 @@ public class Player : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
-        
+        speedDurationTimer += Time.deltaTime;
+
         Move();
         Fire();
     }
 
     private void Move()
     {
+        if (speedDurationTimer >= speedBoostDuration && speedBoostActive)
+        {
+            currentSpeed = speed;
+        }
+        
         float horizontalMovement = Input.GetAxisRaw("Horizontal");
         float verticalMovement = Input.GetAxisRaw("Vertical");
 
-        transform.Translate(new Vector3(horizontalMovement, verticalMovement, 0) * speed * Time.deltaTime);
+        transform.Translate(new Vector3(horizontalMovement, verticalMovement, 0) * currentSpeed * Time.deltaTime);
     }
 
     private void Fire()
@@ -155,6 +169,45 @@ public class Player : MonoBehaviour
                 }
                 
                 break;
+            
+            case 3:
+                //Shield
+                if (!shieldActive)
+                {
+                    shieldActive = true;
+                    shield.SetActive(true);
+                    shield.GetComponent<Animator>().SetBool("popped", false);
+                }
+                else
+                {
+                    //TODO Point Bonus
+                }
+                
+                break;
+            
+            case 4:
+                //Speed
+                if (!speedBoostActive)
+                {
+                    speedDurationTimer = 0f;
+                    currentSpeed = speedBoostSpeed;
+                    speedBoostActive = true;
+                    
+                    //TODO Animate Speed Boost
+                }
+                else
+                {
+                    //TODO Point Bonus
+                }
+
+                break;
+            
+            case 5:
+                //Health
+                print("Health!");
+                //TODO Health bump up to max, bonus points if over.
+                break;
+
         }
     }
 
@@ -186,23 +239,35 @@ public class Player : MonoBehaviour
 
     private void TakeDamage()
     {
-        currentHealth--;
-        
-        //TODO Show damage
-        GetComponent<Animator>().SetTrigger("damaged");
-
-        if (currentHealth <= 0)
+        if (shieldActive)
         {
-            lives--;
-            currentHealth = maxHealth;
+            //TODO Shield dispel animation
+            shield.GetComponent<Animator>().SetBool("popped", true);
             
-            print("New life.");
+            shieldActive = false;
+            shield.SetActive(false);
+        }
+        else
+        {
+            currentHealth--;
+        
+            //TODO Show damage
+            GetComponent<Animator>().SetTrigger("damaged");
+
+            if (currentHealth <= 0)
+            {
+                lives--;
+                currentHealth = maxHealth;
+            
+                print("New life.");
+            }
+        
+            if (lives <= 0)
+            {
+                Death();
+            }
         }
         
-        if (lives <= 0)
-        {
-            Death();
-        }
     }
 
     private void Death()
