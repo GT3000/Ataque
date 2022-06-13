@@ -10,10 +10,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected int cashValue;
     [SerializeField] protected float speed;
     [SerializeField] protected bool canFire;
-    [SerializeField] protected float fireRate;
+    [SerializeField] protected float minFireRate;
+    [SerializeField] protected float maxFireRate;
+    protected float currentFireRate;
     [SerializeField] protected GameObject projectile;
     [SerializeField] protected bool randomPattern;
     [SerializeField] protected bool recycle;
+    [SerializeField] protected GameObject deathFX;
+    [SerializeField] protected AudioClip deathSfx;
 
     protected GameObject projectileContainer;
     protected Vector3 screenBounds;
@@ -27,6 +31,7 @@ public class Enemy : MonoBehaviour
         projectileContainer = new GameObject(transform.name + "Projectile Container");
 
         RandomSpawnSpot(screenBounds);
+        RandomizeFireRate();
     }
 
     private void RandomSpawnSpot(Vector3 screenBounds)
@@ -45,7 +50,7 @@ public class Enemy : MonoBehaviour
         currentTime += Time.deltaTime;
         transform.Translate(Vector3.down * speed *Time.deltaTime);
 
-        if (canFire && fireRate >= currentTime)
+        if (canFire && currentFireRate <= currentTime)
         {
             if (projectile != null)
             {
@@ -70,7 +75,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Player") || col.CompareTag("Projectile"))
+        if (col.CompareTag("Player") || !col.GetComponent<Projectile>().EnemyProjectile)
         {
             if (col.CompareTag("Projectile"))
             {
@@ -84,12 +89,27 @@ public class Enemy : MonoBehaviour
             }
 
             //TODO play enemy destruction VFX
+
+            GameObject tempFx = Instantiate(deathFX, transform.position, Quaternion.identity);
+            GameEvents.PlaySfx(deathSfx);
+            
             Cleanup();
         }
     }
 
+    private void RandomizeFireRate()
+    {
+        float randomFireRate = Random.Range(minFireRate, maxFireRate);
+        currentFireRate = randomFireRate;
+    }
+
     private void Cleanup()
     {
+        if (canFire)
+        {
+            canFire = false;
+        }
+        
         //TODO Pool enemies instead of destroying
         GetComponentInChildren<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
@@ -98,5 +118,6 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject, 6.0f);
 
         GameEvents.EnemyDestroyed();
+        GameEvents.UpdateCash(cashValue);
     }
 }

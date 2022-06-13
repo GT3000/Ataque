@@ -13,6 +13,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] protected int currentAmtSpawned;
     protected bool spawning;
     protected bool playerAlive = true;
+    protected bool startSpawn;
 
     [Header("Powerups")] 
     [SerializeField] protected GameObject[] powerupsToSpawn;
@@ -22,25 +23,26 @@ public class SpawnManager : MonoBehaviour
     {
         GameEvents.EnemyDestroyed += RemoveEnemies;
         GameEvents.PlayerDestroyed += StopSpawner;
+        GameEvents.SpawningStarted += BeginSpawner;
     }
 
     private void OnDisable()
     {
         GameEvents.EnemyDestroyed -= RemoveEnemies;
         GameEvents.PlayerDestroyed -= StopSpawner;
+        GameEvents.SpawningStarted -= BeginSpawner;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(SpawnEnemies());
-        StartCoroutine(SpawnPowerups());
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!spawning && currentAmtSpawned < maxToSpawn)
+        if (!spawning && currentAmtSpawned < maxToSpawn && startSpawn)
         {
             spawning = true;
 
@@ -48,9 +50,16 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    private void BeginSpawner()
+    {
+        startSpawn = true;
+        StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnPowerups());
+    }
+
     private IEnumerator SpawnEnemies()
     {
-        if (currentAmtSpawned < maxToSpawn && playerAlive)
+        if (currentAmtSpawned < maxToSpawn && playerAlive && startSpawn)
         {
             int randomIndex = Random.Range(0, enemiesToSpawn.Length);
 

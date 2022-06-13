@@ -16,6 +16,7 @@ public enum PowerupType
 
 public class PowerUp : MonoBehaviour
 {
+    [SerializeField] protected AudioClip pickupSfx;
     [SerializeField] protected PowerupType powerup;
     [SerializeField] protected float speed;
     [SerializeField] protected bool randomPattern;
@@ -56,6 +57,8 @@ public class PowerUp : MonoBehaviour
                 GameEvents.PowerupPickedUp((int)powerup);
             }
 
+            GameEvents.PlaySfx(pickupSfx);
+            
             Destroy(gameObject);
         }
     }

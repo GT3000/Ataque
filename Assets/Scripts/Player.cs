@@ -1,12 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    [Header("Stats")]
+    [SerializeField] protected int maxHealth;
+    [SerializeField] protected int currentHealth;
+    [SerializeField] protected int lives;
     [SerializeField] protected float speed;
+    [Header("Supports")]
     [SerializeField] protected float speedBoostSpeed;
     [SerializeField] protected float speedBoostDuration;
     protected float speedDurationTimer;
@@ -14,6 +19,9 @@ public class Player : MonoBehaviour
     protected bool speedBoostActive;
     [SerializeField] protected GameObject shield;
     protected bool shieldActive;
+    [Header("Weapons")]
+    [SerializeField] protected List<GameObject> damagePoints;
+    [SerializeField] protected GameObject damagePrefab;
     [SerializeField] protected GameObject projectile;
     [SerializeField] protected GameObject[] firepowerProjectiles;
     [SerializeField] protected GameObject[] energyProjectiles;
@@ -21,13 +29,15 @@ public class Player : MonoBehaviour
     protected int currentUpgrade;
     [SerializeField] protected int upgradeLevel;
     [SerializeField] protected float fireRate;
-    [SerializeField] protected int maxHealth;
-    [SerializeField] protected int currentHealth;
-    [SerializeField] protected int lives;
     protected float currentTime;
     protected GameObject projectileGroup;
     [SerializeField] protected Transform firePoint;
     protected Vector2 screenBounds;
+    [Header("SFX")] 
+    [SerializeField] protected AudioClip laserShot;
+    [SerializeField] protected AudioClip bulletShot;
+    [SerializeField] protected AudioClip missileShot;
+    [Header("Screen Bounds")]
     [SerializeField] private float screenBoundsXOffset;
     [SerializeField] private float screenboundsYOffset;
     // Start is called before the first frame update
@@ -250,16 +260,36 @@ public class Player : MonoBehaviour
         else
         {
             currentHealth--;
+            GameEvents.UpdateHealth(currentHealth);
         
             //TODO Show damage
             GetComponent<Animator>().SetTrigger("damaged");
 
-            if (currentHealth <= 0)
+            if (damagePoints != null)
             {
+                if (currentHealth == 2)
+                {
+                    damagePoints[0].SetActive(true);
+                }
+
+                if (currentHealth == 1)
+                {
+                    damagePoints[1].SetActive(true);
+                }
+            }
+
+            if (currentHealth <= 0 && lives > 0)
+            {
+                print("Lost life.");
+                
                 lives--;
                 currentHealth = maxHealth;
-            
-                print("New life.");
+                GameEvents.NewLife(lives);
+
+                foreach (var damage in damagePoints)
+                {
+                    damage.SetActive(false);
+                }
             }
         
             if (lives <= 0)
@@ -273,6 +303,7 @@ public class Player : MonoBehaviour
     private void Death()
     {
         GameEvents.EnemyDestroyed();
+        GameEvents.GameOver();
         //TODO Explosion VFX
         //TODO end game logic
         Destroy(gameObject);
