@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 980488411094835613}
   - component: {fileID: 980488411094835614}
   - component: {fileID: 980488411094835615}
+  - component: {fileID: 551296005}
+  - component: {fileID: 551296004}
   m_Layer: 0
   m_Name: tile_0000 (2)
   m_TagString: Projectile
@@ -111,6 +113,46 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &551296005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980488411094835612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6bf9fa38f62e6a4b818849b8b52834e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shots: []
+  sfx: {fileID: 8300000, guid: 8111f24d65c6015448dc9c3520fc4128, type: 3}
+  enemyProjectile: 0
+  speed: 3
+  damage: 1
+  perforates: 1
+  totalHits: 0
+--- !u!50 &551296004
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980488411094835612}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &980488411294788357
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +164,8 @@ GameObject:
   - component: {fileID: 980488411294788358}
   - component: {fileID: 980488411294788359}
   - component: {fileID: 980488411294788408}
+  - component: {fileID: 551296007}
+  - component: {fileID: 551296006}
   m_Layer: 0
   m_Name: tile_0000 (1)
   m_TagString: Projectile
@@ -222,6 +266,46 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &551296007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980488411294788357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6bf9fa38f62e6a4b818849b8b52834e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shots: []
+  sfx: {fileID: 8300000, guid: 8111f24d65c6015448dc9c3520fc4128, type: 3}
+  enemyProjectile: 0
+  speed: 3
+  damage: 1
+  perforates: 1
+  totalHits: 0
+--- !u!50 &551296006
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980488411294788357}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &8284941650419818384
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,8 +315,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8284941650419818386}
-  - component: {fileID: 8284941650419818476}
-  - component: {fileID: 8284941650419818477}
   m_Layer: 0
   m_Name: Bullet Double
   m_TagString: Projectile
@@ -257,40 +339,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &8284941650419818476
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8284941650419818384}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &8284941650419818477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8284941650419818384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6bf9fa38f62e6a4b818849b8b52834e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sfx: {fileID: 8300000, guid: 8111f24d65c6015448dc9c3520fc4128, type: 3}
-  speed: 3
-  damage: 1
-  perforates: 1

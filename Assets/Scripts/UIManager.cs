@@ -56,7 +56,6 @@ public class UIManager : MonoBehaviour
         {
             if (i > livesLeft - 1)
             {
-                print("Life gone.");
                 healthSprites[i].gameObject.SetActive(false);
             }
         }

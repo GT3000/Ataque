@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,6 +19,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected bool recycle;
     [SerializeField] protected GameObject deathFX;
     [SerializeField] protected AudioClip deathSfx;
+    [Header("Camera Shake")]
+    [SerializeField] protected float shakeAmt;
+    [SerializeField] protected float shakeSlopeOff;
+    [SerializeField] protected float shakeTime;
 
     protected GameObject projectileContainer;
     protected Vector3 screenBounds;
@@ -75,25 +80,27 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Player") || !col.GetComponent<Projectile>().EnemyProjectile)
+        if (col.CompareTag("Player") || col.CompareTag("Projectile"))
         {
-            if (col.CompareTag("Projectile"))
+            if (col.GetComponent<Projectile>() != null)
             {
-                //TODO add score/cash to total
+                if (col.GetComponent<Projectile>().EnemyProjectile)
+                {
+                    //Ignore
+                }
+                else
+                {
+                    Cleanup();
+                }
             }
-
+            
             if (col.CompareTag("Player"))
             {
                 //TODO destroy player and increment score/cash
                 GameEvents.PlayerHit();
+
+                Cleanup();
             }
-
-            //TODO play enemy destruction VFX
-
-            GameObject tempFx = Instantiate(deathFX, transform.position, Quaternion.identity);
-            GameEvents.PlaySfx(deathSfx);
-            
-            Cleanup();
         }
     }
 
@@ -105,6 +112,10 @@ public class Enemy : MonoBehaviour
 
     private void Cleanup()
     {
+        GameObject tempFx = Instantiate(deathFX, transform.position, Quaternion.identity);
+        GameEvents.PlaySfx(deathSfx);
+        GameEvents.CameraShake(shakeAmt, shakeSlopeOff, shakeTime);
+        
         if (canFire)
         {
             canFire = false;

@@ -56,6 +56,9 @@ MonoBehaviour:
   recycle: 1
   deathFX: {fileID: 5632473444159745579, guid: 823d29e35e3b0a34e8b95d6da59afc6d, type: 3}
   deathSfx: {fileID: 8300000, guid: 05604589336a88044985320f680aad40, type: 3}
+  shakeAmt: 0.1
+  shakeSlopeOff: 1
+  shakeTime: 0.075
 --- !u!61 &2515920664329550182
 BoxCollider2D:
   m_ObjectHideFlags: 0

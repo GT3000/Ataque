@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected int currentHealth;
     [SerializeField] protected int lives;
     [SerializeField] protected float speed;
+    protected Vector3 startPos;
     [Header("Supports")]
     [SerializeField] protected float speedBoostSpeed;
     [SerializeField] protected float speedBoostDuration;
@@ -20,6 +21,8 @@ public class Player : MonoBehaviour
     protected float currentSpeed;
     protected bool speedBoostActive;
     [SerializeField] protected GameObject shield;
+    [SerializeField] protected GameObject[] shieldStages;
+    [SerializeField] protected int shieldHits;
     protected bool shieldActive;
     [Header("Weapons")]
     [SerializeField] protected List<GameObject> damagePoints;
@@ -36,9 +39,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected Transform firePoint;
     protected Vector2 screenBounds;
     [Header("SFX")] 
-    [SerializeField] protected AudioClip laserShot;
-    [SerializeField] protected AudioClip bulletShot;
-    [SerializeField] protected AudioClip missileShot;
+    [SerializeField] protected AudioClip playerHurt;
     [Header("Screen Bounds")]
     [SerializeField] private float screenBoundsXOffset;
     [SerializeField] private float screenboundsYOffset;
@@ -60,7 +61,9 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        transform.position = Vector3.zero;
+        startPos = Vector3.zero;
+        transform.position = startPos;
+        
         projectileGroup = new GameObject("Projectiles");
         currentHealth = maxHealth;
         currentSpeed = speed;
@@ -83,21 +86,7 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            thrusterActive = true;
-        }
-        else
-        {
-            thrusterActive = false;
-        }
-        
-        if (speedDurationTimer >= speedBoostDuration && speedBoostActive)
-        {
-            currentSpeed = speed;
-        }
-
-        if (thrusterActive && !speedBoostActive)
+        if (Input.GetKey(KeyCode.LeftShift) && !speedBoostActive)
         {
             currentSpeed = speed * thrusterBoost;
         }
@@ -105,7 +94,12 @@ public class Player : MonoBehaviour
         {
             currentSpeed = speed;
         }
-        
+
+        if (speedDurationTimer >= speedBoostDuration && speedBoostActive)
+        {
+            currentSpeed = speed;
+        }
+
         float horizontalMovement = Input.GetAxisRaw("Horizontal");
         float verticalMovement = Input.GetAxisRaw("Vertical");
 
@@ -204,8 +198,11 @@ public class Player : MonoBehaviour
                 //Shield
                 if (!shieldActive)
                 {
+                    shieldHits = shieldStages.Length;
                     shieldActive = true;
                     shield.SetActive(true);
+                    shieldStages[0].SetActive(true);
+                    shieldStages[1].SetActive(true);
                     shield.GetComponent<Animator>().SetBool("popped", false);
                 }
                 else
@@ -271,17 +268,25 @@ public class Player : MonoBehaviour
     {
         if (shieldActive)
         {
-            //TODO Shield dispel animation
-            shield.GetComponent<Animator>().SetBool("popped", true);
-            
-            shieldActive = false;
-            shield.SetActive(false);
+            shieldHits--;
+
+            if (shieldHits < 0)
+            {
+                shield.GetComponent<Animator>().SetBool("popped", true);
+
+                shieldActive = false;
+                shield.SetActive(false);
+            }
+            else
+            {
+                shieldStages[shieldHits].SetActive(false);
+            }
         }
         else
         {
             currentHealth--;
             GameEvents.UpdateHealth(currentHealth);
-        
+
             //TODO Show damage
             GetComponent<Animator>().SetTrigger("damaged");
 
@@ -296,15 +301,16 @@ public class Player : MonoBehaviour
                 {
                     damagePoints[1].SetActive(true);
                 }
+
+                GameEvents.CameraShake(0.2f, 1.0f, 0.25f);
             }
 
             if (currentHealth <= 0 && lives > 0)
             {
-                print("Lost life.");
-                
                 lives--;
                 currentHealth = maxHealth;
                 GameEvents.NewLife(lives);
+                transform.position = startPos;
 
                 foreach (var damage in damagePoints)
                 {
