@@ -17241,6 +17241,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506768654}
   m_CullTransparentMesh: 1
+--- !u!1001 &1537354750
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500962, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329829361173500988, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
+      propertyPath: m_Name
+      value: Speed Boost Upgrade
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
 --- !u!1 &1590802752 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4904797892546671460, guid: 528d99634453aef43bc421fe5b2d96e1, type: 3}
@@ -17754,8 +17811,8 @@ MonoBehaviour:
   enemiesToSpawn:
   - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
   - {fileID: 2515920664329550235, guid: fb0eac12174223e4291a6d6a723c4de8, type: 3}
-  spawnInterval: 1
-  maxToSpawn: 25
+  spawnInterval: 2
+  maxToSpawn: 15
   currentAmtSpawned: 0
   powerupsToSpawn:
   - {fileID: 8000618613795074276, guid: dbba51b598c7e3349a7b2989da420a26, type: 3}

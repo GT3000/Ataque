@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     [SerializeField] protected float speedBoostSpeed;
     [SerializeField] protected float speedBoostDuration;
     [SerializeField] protected float thrusterBoost;
-    [SerializeField] protected bool thrusterActive;
     protected float speedDurationTimer;
     protected float currentSpeed;
     protected bool speedBoostActive;
@@ -90,12 +89,12 @@ public class Player : MonoBehaviour
         {
             currentSpeed = speed * thrusterBoost;
         }
-        else
-        {
-            currentSpeed = speed;
-        }
 
-        if (speedDurationTimer >= speedBoostDuration && speedBoostActive)
+        if (speedDurationTimer <= speedBoostDuration && speedBoostActive)
+        {
+            currentSpeed = speedBoostSpeed;
+        }
+        else
         {
             currentSpeed = speed;
         }
@@ -217,7 +216,6 @@ public class Player : MonoBehaviour
                 if (!speedBoostActive)
                 {
                     speedDurationTimer = 0f;
-                    currentSpeed = speedBoostSpeed;
                     speedBoostActive = true;
                     
                     //TODO Animate Speed Boost
