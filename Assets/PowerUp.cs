@@ -48,15 +48,7 @@ public class PowerUp : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            if (powerup == PowerupType.Speed || powerup == PowerupType.Health)
-            {
-                
-            }
-            else
-            {
-                GameEvents.PowerupPickedUp((int)powerup);
-            }
-
+            GameEvents.PowerupPickedUp((int)powerup);
             GameEvents.PlaySfx(pickupSfx);
             
             Destroy(gameObject);

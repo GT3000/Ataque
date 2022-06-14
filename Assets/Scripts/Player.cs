@@ -232,7 +232,14 @@ public class Player : MonoBehaviour
             case 5:
                 //Health
                 print("Health!");
-                //TODO Health bump up to max, bonus points if over.
+                if (currentHealth < maxHealth)
+                {
+                    Heal();
+                }
+                else
+                {
+                    //TODO Point Bonus
+                }
                 break;
 
         }
@@ -324,6 +331,26 @@ public class Player : MonoBehaviour
             }
         }
         
+    }
+
+    private void Heal()
+    {
+        currentHealth++;
+        GameEvents.UpdateHealth(currentHealth);
+
+        //TODO Show health animation
+
+        if (damagePoints != null)
+        {
+            if (currentHealth >= 2)
+            {
+                damagePoints[0].SetActive(false);
+            }
+            else if (currentHealth == 1)
+            {
+                damagePoints[1].SetActive(false);
+            }
+        }
     }
 
     private void Death()
