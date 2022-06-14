@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     [Header("Supports")]
     [SerializeField] protected float speedBoostSpeed;
     [SerializeField] protected float speedBoostDuration;
+    [SerializeField] protected float thrusterBoost;
+    [SerializeField] protected bool thrusterActive;
     protected float speedDurationTimer;
     protected float currentSpeed;
     protected bool speedBoostActive;
@@ -74,14 +76,32 @@ public class Player : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         speedDurationTimer += Time.deltaTime;
-
+        
         Move();
         Fire();
     }
 
     private void Move()
     {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            thrusterActive = true;
+        }
+        else
+        {
+            thrusterActive = false;
+        }
+        
         if (speedDurationTimer >= speedBoostDuration && speedBoostActive)
+        {
+            currentSpeed = speed;
+        }
+
+        if (thrusterActive && !speedBoostActive)
+        {
+            currentSpeed = speed * thrusterBoost;
+        }
+        else
         {
             currentSpeed = speed;
         }
