@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     [Header("Supports")]
     [SerializeField] protected float speedBoostSpeed;
     [SerializeField] protected float speedBoostDuration;
-    [SerializeField] protected float thrusterBoost;
     protected float speedDurationTimer;
     protected float currentSpeed;
     protected bool speedBoostActive;
@@ -23,6 +22,16 @@ public class Player : MonoBehaviour
     [SerializeField] protected GameObject[] shieldStages;
     [SerializeField] protected int shieldHits;
     protected bool shieldActive;
+    [Header("Thruster")]
+    [SerializeField] protected float thrusterBoost;
+    [SerializeField] protected float totalThrusterSupply;
+    [SerializeField] protected float thrusterBurnRate;
+    [SerializeField] protected float coolDownLockoutTime;
+    [SerializeField] protected GameObject ThrusterFX;
+    protected float thrusterSupply;
+    protected bool onCooldown;
+    protected float coolDownTimer;
+    
     [Header("Weapons")]
     [SerializeField] protected List<GameObject> damagePoints;
     [SerializeField] protected GameObject damagePrefab;
@@ -62,6 +71,8 @@ public class Player : MonoBehaviour
     {
         startPos = Vector3.zero;
         transform.position = startPos;
+        thrusterSupply = totalThrusterSupply;
+        GameEvents.SetThrusterMax(totalThrusterSupply);
         
         projectileGroup = new GameObject("Projectiles");
         currentHealth = maxHealth;
@@ -77,6 +88,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
+        coolDownTimer += Time.deltaTime;
         speedDurationTimer += Time.deltaTime;
         
         Move();
@@ -85,10 +97,7 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && !speedBoostActive)
-        {
-            currentSpeed = speed * thrusterBoost;
-        }
+        Thruster();
 
         if (speedDurationTimer <= speedBoostDuration && speedBoostActive)
         {
@@ -103,6 +112,56 @@ public class Player : MonoBehaviour
         float verticalMovement = Input.GetAxisRaw("Vertical");
 
         transform.Translate(new Vector3(horizontalMovement, verticalMovement, 0) * currentSpeed * Time.deltaTime);
+    }
+
+    private void Thruster()
+    {
+        //Controls Thruster
+        if (Input.GetKey(KeyCode.LeftShift) && !speedBoostActive && !onCooldown && thrusterSupply > 0)
+        {
+            currentSpeed = speed * thrusterBoost;
+            thrusterSupply -= thrusterBurnRate;
+
+            if (!ThrusterFX.activeInHierarchy)
+            {
+                ThrusterFX.SetActive(true);
+            }
+        }
+        else if(!onCooldown)
+        {
+            thrusterSupply += thrusterBurnRate;
+            
+            if (ThrusterFX.activeInHierarchy)
+            {
+                ThrusterFX.SetActive(false);
+            }
+        }
+
+        //If Thruster runs out, lock it down until it cools off
+        if (thrusterSupply <= 0 && !onCooldown)
+        {
+            onCooldown = true;
+            coolDownTimer = 0f;
+            
+            if (ThrusterFX.activeInHierarchy)
+            {
+                ThrusterFX.SetActive(false);
+            }
+        }
+        else if (onCooldown && coolDownLockoutTime <= coolDownTimer)
+        {
+            //Refill thruster after lockdown but don't let it get used until it refills totally
+            if (thrusterSupply < totalThrusterSupply)
+            {
+                thrusterSupply += thrusterBurnRate;
+            }
+            else
+            {
+                onCooldown = false; 
+            }
+        }
+
+        GameEvents.ThrusterSupply(thrusterSupply);
     }
 
     private void Fire()
@@ -229,7 +288,6 @@ public class Player : MonoBehaviour
             
             case 5:
                 //Health
-                print("Health!");
                 if (currentHealth < maxHealth)
                 {
                     Heal();

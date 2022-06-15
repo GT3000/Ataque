@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] protected GameObject gameOverPanel;
     [SerializeField] protected Image[] healthSprites;
     [SerializeField] protected GameObject startMissionAnimation;
+    [SerializeField] protected Slider thrusterSlider;
+    [SerializeField] protected GameObject thrusterFill;
 
     private void OnEnable()
     {
@@ -18,6 +20,8 @@ public class UIManager : MonoBehaviour
         GameEvents.UpdateHealth += ChangeHealth;
         GameEvents.NewLife += DeductLives;
         GameEvents.GameOver += GameOverUI;
+        GameEvents.ThrusterSupply += UpdateThrusterSlider;
+        GameEvents.SetThrusterMax += SetThrusterValues;
     }
 
     private void OnDisable()
@@ -26,6 +30,8 @@ public class UIManager : MonoBehaviour
         GameEvents.UpdateHealth -= ChangeHealth;
         GameEvents.NewLife -= DeductLives;
         GameEvents.GameOver -= GameOverUI;
+        GameEvents.ThrusterSupply -= UpdateThrusterSlider;
+        GameEvents.SetThrusterMax -= SetThrusterValues;
     }
 
     // Start is called before the first frame update
@@ -38,6 +44,25 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void UpdateThrusterSlider(float value)
+    {
+        thrusterSlider.value = value;
+        
+        if (thrusterSlider.value <= 0 && thrusterFill.activeInHierarchy)
+        {
+            thrusterFill.SetActive(false);
+        }
+        else if(!thrusterFill.activeInHierarchy && thrusterSlider.value > 0)
+        {
+            thrusterFill.SetActive(true);
+        }
+    }
+
+    private void SetThrusterValues(float supply)
+    {
+        thrusterSlider.maxValue = supply;
     }
 
     #region Lives and Health
@@ -116,3 +141,4 @@ public class UIManager : MonoBehaviour
 
     #endregion
 }
+
