@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum PowerupType
@@ -17,11 +18,16 @@ public enum PowerupType
 
 public class PowerUp : MonoBehaviour
 {
+    [SerializeField] protected float lifetime;
+    [SerializeField] protected int spawnWeight;
     [SerializeField] protected AudioClip pickupSfx;
     [SerializeField] protected PowerupType powerup;
     [SerializeField] protected float speed;
     [SerializeField] protected bool randomPattern;
     protected Vector3 screenBounds;
+    private float currentTime;
+    
+    public int SpawnWeight => spawnWeight;
 
     private void Start()
     {
@@ -42,7 +48,15 @@ public class PowerUp : MonoBehaviour
 
     private void Update()
     {
+        currentTime += Time.deltaTime;
+        
         transform.Translate(Vector3.down * speed * Time.deltaTime);
+
+        if (lifetime <= currentTime)
+        {
+            //TODO Pool instead of destroy
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -52,6 +66,7 @@ public class PowerUp : MonoBehaviour
             GameEvents.PowerupPickedUp((int)powerup);
             GameEvents.PlaySfx(pickupSfx);
             
+            //TODO Pool instead of destroy
             Destroy(gameObject);
         }
     }

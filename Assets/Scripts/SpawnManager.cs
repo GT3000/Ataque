@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,6 +19,7 @@ public class SpawnManager : MonoBehaviour
     [Header("Powerups")] 
     [SerializeField] protected GameObject[] powerupsToSpawn;
     [SerializeField] protected float powerupSpawnInterval;
+    [SerializeField] protected List<int> weightTable;
 
     private void OnEnable()
     {
@@ -79,16 +81,53 @@ public class SpawnManager : MonoBehaviour
         yield return null;
     }
 
+    // private IEnumerator SpawnPowerups()
+    // {
+    //     int randomIndex = Random.Range(0, powerupsToSpawn.Length);
+    //
+    //     GameObject tempPowerup = Instantiate(powerupsToSpawn[randomIndex], transform.position, Quaternion.identity);
+    //     tempPowerup.transform.parent = transform;
+    //
+    //     yield return new WaitForSeconds(powerupSpawnInterval);
+    //
+    //     StartCoroutine(SpawnPowerups());
+    // }
+
     private IEnumerator SpawnPowerups()
     {
-        int randomIndex = Random.Range(0, powerupsToSpawn.Length);
+        int totalWeight = 0;
+        int randomIndex;
+        
+        foreach (var powerup in powerupsToSpawn)
+        {
+            totalWeight += powerup.GetComponent<PowerUp>().SpawnWeight;
+            weightTable.Add(powerup.GetComponent<PowerUp>().SpawnWeight);
+        }
 
-        GameObject tempPowerup = Instantiate(powerupsToSpawn[randomIndex], transform.position, Quaternion.identity);
-        tempPowerup.transform.parent = transform;
+        randomIndex = Random.Range(0, totalWeight);
 
-        yield return new WaitForSeconds(powerupSpawnInterval);
+        for (int i = 0; i < weightTable.Count; i++)
+        {
+            if (randomIndex <= weightTable[i])
+            {
+                print("Weight is: " + randomIndex);
+                
+                GameObject tempPowerup = Instantiate(powerupsToSpawn[i], transform.position, Quaternion.identity);
+                tempPowerup.transform.parent = transform;
 
-        StartCoroutine(SpawnPowerups());
+                yield return new WaitForSeconds(powerupSpawnInterval);
+                
+                StartCoroutine(SpawnPowerups());
+                
+                break;
+            }
+            else
+            {
+                randomIndex -= weightTable[i];
+                
+                print("Reached here");
+            }
+        }
     }
 
     private void RemoveEnemies()
