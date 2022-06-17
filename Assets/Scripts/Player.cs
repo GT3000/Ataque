@@ -216,6 +216,9 @@ public class Player : MonoBehaviour
                     projectile = firepowerProjectiles[0];
                 }
                 
+                currentAmmo = maxAmmo;
+                GameEvents.UpdateAmmo(currentAmmo);
+                
                 break;
             
             case 1:
@@ -240,6 +243,9 @@ public class Player : MonoBehaviour
                     projectile = energyProjectiles[0];
                 }
                 
+                currentAmmo = maxAmmo;
+                GameEvents.UpdateAmmo(currentAmmo);
+                
                 break;
                 
             case 2:
@@ -263,6 +269,9 @@ public class Player : MonoBehaviour
                     upgradeLevel = 0;
                     projectile = missileProjectiles[0];
                 }
+                
+                currentAmmo = maxAmmo;
+                GameEvents.UpdateAmmo(currentAmmo);
                 
                 break;
             
@@ -311,7 +320,12 @@ public class Player : MonoBehaviour
                     //TODO Point Bonus
                 }
                 break;
-
+            
+            case 6:
+                //Ammo Pickup
+                currentAmmo = maxAmmo;
+                GameEvents.UpdateAmmo(currentAmmo);
+                break;
         }
     }
 

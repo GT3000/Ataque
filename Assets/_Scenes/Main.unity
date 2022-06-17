@@ -18344,6 +18344,7 @@ MonoBehaviour:
   - {fileID: 6329829361173500988, guid: 616a265f0b9713741aeb2f00c306a9d8, type: 3}
   - {fileID: 5718322597867567910, guid: c8955a970a87d7a419cc4fc8d209fe25, type: 3}
   - {fileID: 7252505262973681643, guid: b11580338f33e9344829ff74b885fd2b, type: 3}
+  - {fileID: 8838510994976605447, guid: e2d264fd2cef7e44b871bc1cd5b8410e, type: 3}
   powerupSpawnInterval: 10
 --- !u!1 &2146337859 stripped
 GameObject:

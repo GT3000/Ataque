@@ -11,7 +11,8 @@ public enum PowerupType
     Missile,
     Shield,
     Speed,
-    Health
+    Health,
+    Ammo
 }
 
 public class PowerUp : MonoBehaviour
