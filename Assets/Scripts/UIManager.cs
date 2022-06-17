@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] protected GameObject startMissionAnimation;
     [SerializeField] protected Slider thrusterSlider;
     [SerializeField] protected GameObject thrusterFill;
+    [SerializeField] protected TextMeshProUGUI ammoCounter;
 
     private void OnEnable()
     {
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour
         GameEvents.GameOver += GameOverUI;
         GameEvents.ThrusterSupply += UpdateThrusterSlider;
         GameEvents.SetThrusterMax += SetThrusterValues;
+        GameEvents.UpdateAmmo += UpdateAmmoCount;
     }
 
     private void OnDisable()
@@ -32,6 +34,7 @@ public class UIManager : MonoBehaviour
         GameEvents.GameOver -= GameOverUI;
         GameEvents.ThrusterSupply -= UpdateThrusterSlider;
         GameEvents.SetThrusterMax -= SetThrusterValues;
+        GameEvents.UpdateAmmo -= UpdateAmmoCount;
     }
 
     // Start is called before the first frame update
@@ -45,6 +48,17 @@ public class UIManager : MonoBehaviour
     {
         
     }
+
+    #region Weapons
+
+    private void UpdateAmmoCount(int currentAmmoCount)
+    {
+        ammoCounter.text = currentAmmoCount.ToString();
+    }
+
+    #endregion
+
+    #region Thrusters
 
     private void UpdateThrusterSlider(float value)
     {
@@ -64,6 +78,8 @@ public class UIManager : MonoBehaviour
     {
         thrusterSlider.maxValue = supply;
     }
+
+    #endregion
 
     #region Lives and Health
 

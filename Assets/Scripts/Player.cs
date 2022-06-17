@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected int lives;
     [SerializeField] protected float speed;
     protected Vector3 startPos;
+    
     [Header("Supports")]
     [SerializeField] protected float speedBoostSpeed;
     [SerializeField] protected float speedBoostDuration;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected GameObject[] shieldStages;
     [SerializeField] protected int shieldHits;
     protected bool shieldActive;
+    
     [Header("Thruster")]
     [SerializeField] protected float thrusterBoost;
     [SerializeField] protected float totalThrusterSupply;
@@ -45,12 +47,17 @@ public class Player : MonoBehaviour
     protected float currentTime;
     protected GameObject projectileGroup;
     [SerializeField] protected Transform firePoint;
-    protected Vector2 screenBounds;
+    [SerializeField] protected int maxAmmo;
+    protected int currentAmmo;
+    
     [Header("SFX")] 
     [SerializeField] protected AudioClip playerHurt;
+    
     [Header("Screen Bounds")]
     [SerializeField] private float screenBoundsXOffset;
     [SerializeField] private float screenboundsYOffset;
+    protected Vector2 screenBounds;
+    
     // Start is called before the first frame update
 
     private void OnEnable()
@@ -71,10 +78,14 @@ public class Player : MonoBehaviour
     {
         startPos = Vector3.zero;
         transform.position = startPos;
+        
         thrusterSupply = totalThrusterSupply;
         GameEvents.SetThrusterMax(totalThrusterSupply);
         
         projectileGroup = new GameObject("Projectiles");
+        currentAmmo = maxAmmo;
+        GameEvents.UpdateAmmo(currentAmmo);
+        
         currentHealth = maxHealth;
         currentSpeed = speed;
 
@@ -166,12 +177,15 @@ public class Player : MonoBehaviour
 
     private void Fire()
     {
-        if (Input.GetButton("Fire1") && projectile != null && currentTime >= fireRate)
+        if (Input.GetButton("Fire1") && projectile != null && currentTime >= fireRate && currentAmmo > 0)
         {
             GameObject tempProjectile = Instantiate(projectile, firePoint.position, Quaternion.identity);
             tempProjectile.transform.parent = projectileGroup.transform;
 
             currentTime = 0f;
+
+            currentAmmo--;
+            GameEvents.UpdateAmmo(currentAmmo);
         }
     }
 
