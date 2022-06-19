@@ -11,7 +11,7 @@ public static class GameEvents
     public static Action EnemyDestroyed;
     public static Action<int> UpdateCash;
     public static Action<int> DisplayCash;
-    public static Action<int> UpdateAmmo;
+    public static Action<int, int> UpdateAmmo;
     public static Action<int> UpdateHealth;
     public static Action<int> NewLife;
     public static Action<int> PowerupPickedUp;

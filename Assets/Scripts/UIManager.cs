@@ -51,9 +51,9 @@ public class UIManager : MonoBehaviour
 
     #region Weapons
 
-    private void UpdateAmmoCount(int currentAmmoCount)
+    private void UpdateAmmoCount(int currentAmmoCount, int maxAmmoCount)
     {
-        ammoCounter.text = currentAmmoCount.ToString();
+        ammoCounter.text = currentAmmoCount.ToString() + "/" + maxAmmoCount;
     }
 
     #endregion

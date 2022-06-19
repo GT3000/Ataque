@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
         
         projectileGroup = new GameObject("Projectiles");
         currentAmmo = maxAmmo;
-        GameEvents.UpdateAmmo(currentAmmo);
+        GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
         
         currentHealth = maxHealth;
         currentSpeed = speed;
@@ -185,7 +185,7 @@ public class Player : MonoBehaviour
             currentTime = 0f;
 
             currentAmmo--;
-            GameEvents.UpdateAmmo(currentAmmo);
+            GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
         }
     }
 
@@ -217,7 +217,7 @@ public class Player : MonoBehaviour
                 }
                 
                 currentAmmo = maxAmmo;
-                GameEvents.UpdateAmmo(currentAmmo);
+                GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
                 
                 break;
             
@@ -244,7 +244,7 @@ public class Player : MonoBehaviour
                 }
                 
                 currentAmmo = maxAmmo;
-                GameEvents.UpdateAmmo(currentAmmo);
+                GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
                 
                 break;
                 
@@ -271,7 +271,7 @@ public class Player : MonoBehaviour
                 }
                 
                 currentAmmo = maxAmmo;
-                GameEvents.UpdateAmmo(currentAmmo);
+                GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
                 
                 break;
             
@@ -324,7 +324,7 @@ public class Player : MonoBehaviour
             case 6:
                 //Ammo Pickup
                 currentAmmo = maxAmmo;
-                GameEvents.UpdateAmmo(currentAmmo);
+                GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
                 break;
         }
     }
