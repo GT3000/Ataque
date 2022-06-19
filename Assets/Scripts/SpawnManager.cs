@@ -110,8 +110,6 @@ public class SpawnManager : MonoBehaviour
         {
             if (randomIndex <= weightTable[i])
             {
-                print("Weight is: " + randomIndex);
-                
                 GameObject tempPowerup = Instantiate(powerupsToSpawn[i], transform.position, Quaternion.identity);
                 tempPowerup.transform.parent = transform;
 
@@ -124,8 +122,6 @@ public class SpawnManager : MonoBehaviour
             else
             {
                 randomIndex -= weightTable[i];
-                
-                print("Reached here");
             }
         }
     }

@@ -18405,6 +18405,7 @@ MonoBehaviour:
   enemiesToSpawn:
   - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
   - {fileID: 2515920664329550235, guid: fb0eac12174223e4291a6d6a723c4de8, type: 3}
+  - {fileID: 3569300573016421772, guid: f1f66d7e23877cb429a65a4bad97f00e, type: 3}
   spawnInterval: 2
   maxToSpawn: 15
   currentAmtSpawned: 0
