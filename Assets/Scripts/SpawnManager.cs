@@ -8,13 +8,12 @@ using Random = UnityEngine.Random;
 public class SpawnManager : MonoBehaviour
 {
     [Header("Enemies")]
-    [SerializeField] protected GameObject[] enemiesToSpawn;
-    [SerializeField] protected float spawnInterval;
-    [SerializeField] protected int maxToSpawn;
-    [SerializeField] protected int currentAmtSpawned;
     protected bool spawning;
-    protected bool playerAlive = true;
-    protected bool startSpawn;
+    protected bool isSpawning;
+    [SerializeField] protected List<Wave> waves;
+    [SerializeField] protected float timeBetweenWaves;
+    protected int currentWaveIndex;
+    protected bool finalWave;
 
     [Header("Powerups")] 
     [SerializeField] protected GameObject[] powerupsToSpawn;
@@ -44,42 +43,97 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!spawning && currentAmtSpawned < maxToSpawn && startSpawn)
+        if (currentWaveIndex <= waves.Count - 1)
         {
-            spawning = true;
+            if(waves[currentWaveIndex].currentEnemies > 0 && waves[currentWaveIndex].enemiesRemaining <= 0 && spawning)
+            {
+                spawning = false;
+                StartCoroutine(CheckWave());
+            }
+        }
 
-            StartCoroutine(SpawnEnemies());
+        if (finalWave && waves[currentWaveIndex].enemiesRemaining <= 0)
+        {
+            print("End mission");
+            StopCoroutine(SpawnPowerups());
+            StopCoroutine(SpawnEnemies());
         }
     }
 
     private void BeginSpawner()
     {
-        startSpawn = true;
+        spawning = true;
         StartCoroutine(SpawnEnemies());
         StartCoroutine(SpawnPowerups());
     }
 
     private IEnumerator SpawnEnemies()
     {
-        if (currentAmtSpawned < maxToSpawn && playerAlive && startSpawn)
+        print(currentWaveIndex);
+        
+        if (waves[currentWaveIndex].currentEnemies < waves[currentWaveIndex].totalEnemiesInWave && spawning)
         {
-            int randomIndex = Random.Range(0, enemiesToSpawn.Length);
-
-            GameObject tempEnemy = Instantiate(enemiesToSpawn[randomIndex], transform.position, Quaternion.identity);
-            tempEnemy.transform.parent = transform;
-            currentAmtSpawned++;
+            print("Spawning");
             
-            yield return new WaitForSeconds(spawnInterval);
+            int randomIndex = Random.Range(0, waves[currentWaveIndex].enemies.Count);
 
+            GameObject tempEnemy = Instantiate(waves[currentWaveIndex].enemies[randomIndex], transform.position, Quaternion.identity);
+            tempEnemy.transform.parent = transform;
+            waves[currentWaveIndex].currentEnemies++;
+            waves[currentWaveIndex].enemiesRemaining++;
+
+            yield return new WaitForSeconds(waves[currentWaveIndex].spawnInterval);
+            
             StartCoroutine(SpawnEnemies());
-        }
-        else
-        {
-            spawning = false;
         }
 
         yield return null;
     }
+
+    private IEnumerator CheckWave()
+    {
+        yield return new WaitForSeconds(timeBetweenWaves);
+        
+        currentWaveIndex++;
+
+        if (currentWaveIndex <= waves.Count && !finalWave)
+        {
+            if(waves[currentWaveIndex].isBoss)
+            {
+                finalWave = true;
+                spawning = true;
+                StartCoroutine(SpawnEnemies());
+            }
+        
+            if (!waves[currentWaveIndex].isBoss)
+            {
+                spawning = true;
+                StartCoroutine(SpawnEnemies());
+            }
+        }
+    }
+    
+    // private IEnumerator SpawnEnemies()
+    // {
+    //     if (currentAmtSpawned < maxToSpawn && playerAlive && startSpawn)
+    //     {
+    //         int randomIndex = Random.Range(0, enemiesToSpawn.Length);
+    //
+    //         GameObject tempEnemy = Instantiate(enemiesToSpawn[randomIndex], transform.position, Quaternion.identity);
+    //         tempEnemy.transform.parent = transform;
+    //         currentAmtSpawned++;
+    //         
+    //         yield return new WaitForSeconds(spawnInterval);
+    //
+    //         StartCoroutine(SpawnEnemies());
+    //     }
+    //     else
+    //     {
+    //         spawning = false;
+    //     }
+    //
+    //     yield return null;
+    // }
 
     // private IEnumerator SpawnPowerups()
     // {
@@ -128,12 +182,22 @@ public class SpawnManager : MonoBehaviour
 
     private void RemoveEnemies()
     {
-        currentAmtSpawned--;
+        waves[currentWaveIndex].enemiesRemaining--;
     }
 
     private void StopSpawner()
     {
-        playerAlive = false;
-        print("Player died. Stop spawning.");
+        spawning = false;
     }
+}
+
+[System.Serializable]
+public class Wave
+{
+    public int totalEnemiesInWave;
+    public int enemiesRemaining;
+    public int currentEnemies;
+    public float spawnInterval;
+    public bool isBoss;
+    public List<GameObject> enemies;
 }

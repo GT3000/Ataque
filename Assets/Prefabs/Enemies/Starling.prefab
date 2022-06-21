@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cashValue: 250
-  speed: 0.75
+  speed: 1
   randomPattern: 1
   recycle: 1
   deathFX: {fileID: 5632473444159745579, guid: 823d29e35e3b0a34e8b95d6da59afc6d, type: 3}

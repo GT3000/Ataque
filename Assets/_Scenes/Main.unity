@@ -18402,13 +18402,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd77b33de8c1fd54daf48152ca41a171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesToSpawn:
-  - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
-  - {fileID: 2515920664329550235, guid: fb0eac12174223e4291a6d6a723c4de8, type: 3}
-  - {fileID: 3569300573016421772, guid: f1f66d7e23877cb429a65a4bad97f00e, type: 3}
-  spawnInterval: 2
-  maxToSpawn: 15
-  currentAmtSpawned: 0
+  waves:
+  - totalEnemiesInWave: 1
+    enemiesRemaining: 0
+    currentEnemies: 0
+    spawnInterval: 0.25
+    isBoss: 0
+    enemies:
+    - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
+  - totalEnemiesInWave: 1
+    enemiesRemaining: 0
+    currentEnemies: 0
+    spawnInterval: 0.25
+    isBoss: 1
+    enemies:
+    - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
+    - {fileID: 2515920664329550235, guid: fb0eac12174223e4291a6d6a723c4de8, type: 3}
+  timeBetweenWaves: 3
   powerupsToSpawn:
   - {fileID: 8000618613795074276, guid: dbba51b598c7e3349a7b2989da420a26, type: 3}
   - {fileID: 182467416318941654, guid: 4a26a92e1a52787489501be017499da5, type: 3}
