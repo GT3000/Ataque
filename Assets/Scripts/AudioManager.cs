@@ -57,7 +57,10 @@ public class AudioManager : MonoBehaviour
 
     private void PlaySfx(AudioClip clip)
     {
-        StartCoroutine(ExecuteSfx(clip));
+        if (clip != null)
+        {
+            StartCoroutine(ExecuteSfx(clip));
+        }
     }
 
     private IEnumerator ExecuteSfx(AudioClip clip)

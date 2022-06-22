@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField] protected int lives;
     [SerializeField] protected float speed;
     protected Vector3 startPos;
+    [SerializeField] protected float lengthOfImmobilization;
+    protected bool isImmobilized;
+    protected float immobilizedTimer;
     
     [Header("Supports")]
     [SerializeField] protected float speedBoostSpeed;
@@ -108,21 +111,33 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        Thruster();
-
-        if (speedDurationTimer <= speedBoostDuration && speedBoostActive)
+        if (isImmobilized)
         {
-            currentSpeed = speedBoostSpeed;
+            immobilizedTimer += Time.deltaTime;
+
+            if (lengthOfImmobilization <= immobilizedTimer)
+            {
+                isImmobilized = false;
+            }
         }
         else
         {
-            currentSpeed = speed;
+            Thruster();
+
+            if (speedDurationTimer <= speedBoostDuration && speedBoostActive)
+            {
+                currentSpeed = speedBoostSpeed;
+            }
+            else
+            {
+                currentSpeed = speed;
+            }
+
+            float horizontalMovement = Input.GetAxisRaw("Horizontal");
+            float verticalMovement = Input.GetAxisRaw("Vertical");
+
+            transform.Translate(new Vector3(horizontalMovement, verticalMovement, 0) * currentSpeed * Time.deltaTime); 
         }
-
-        float horizontalMovement = Input.GetAxisRaw("Horizontal");
-        float verticalMovement = Input.GetAxisRaw("Vertical");
-
-        transform.Translate(new Vector3(horizontalMovement, verticalMovement, 0) * currentSpeed * Time.deltaTime);
     }
 
     private void Thruster()
@@ -325,6 +340,12 @@ public class Player : MonoBehaviour
                 //Ammo Pickup
                 currentAmmo = maxAmmo;
                 GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
+                break;
+            
+            case 7:
+                //EMP Mine that disables movement
+                isImmobilized = true;
+                immobilizedTimer = 0f;
                 break;
         }
     }

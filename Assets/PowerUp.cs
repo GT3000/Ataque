@@ -13,7 +13,8 @@ public enum PowerupType
     Shield,
     Speed,
     Health,
-    Ammo
+    Ammo,
+    Immobilizer
 }
 
 public class PowerUp : MonoBehaviour
@@ -24,6 +25,7 @@ public class PowerUp : MonoBehaviour
     [SerializeField] protected PowerupType powerup;
     [SerializeField] protected float speed;
     [SerializeField] protected bool randomPattern;
+    [SerializeField] protected bool negativePowerup;
     protected Vector3 screenBounds;
     private float currentTime;
     
