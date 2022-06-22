@@ -57,6 +57,7 @@ public class SpawnManager : MonoBehaviour
             print("End mission");
             StopCoroutine(SpawnPowerups());
             StopCoroutine(SpawnEnemies());
+            //TODO End Mission Animation
         }
     }
 
@@ -69,12 +70,8 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnEnemies()
     {
-        print(currentWaveIndex);
-        
         if (waves[currentWaveIndex].currentEnemies < waves[currentWaveIndex].totalEnemiesInWave && spawning)
         {
-            print("Spawning");
-            
             int randomIndex = Random.Range(0, waves[currentWaveIndex].enemies.Count);
 
             GameObject tempEnemy = Instantiate(waves[currentWaveIndex].enemies[randomIndex], transform.position, Quaternion.identity);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] protected int health;
     [SerializeField] protected int cashValue;
     [SerializeField] protected float speed;
     [SerializeField] protected bool randomPattern;
@@ -26,6 +28,7 @@ public class Enemy : MonoBehaviour
     protected Vector3 position;
     protected Vector3 axis;
     protected bool wasSweeping;
+    [Header("Projectiles")]
     //Firing Stats
     [SerializeField] protected bool canFire;
     [SerializeField] protected float minFireRate;
@@ -33,6 +36,9 @@ public class Enemy : MonoBehaviour
     private bool directionSet;
     protected float currentFireRate;
     [SerializeField] protected GameObject projectile;
+    [Header("Support")] 
+    [SerializeField] protected bool shielded;
+    [SerializeField] protected GameObject shield;
     
     [Header("Helper Variables")]
     [SerializeField] protected float screenBoundsOffset;
@@ -125,7 +131,21 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    Cleanup();
+                    if (!shielded)
+                    {
+                         health -= col.GetComponent<Projectile>().Damage;
+
+                        if (health < 0)
+                        {
+                            health = 0;
+                            Cleanup();
+                        } 
+                    }
+                    else
+                    {
+                        shield.SetActive(false);
+                        shielded = false;
+                    }
                 }
             }
             

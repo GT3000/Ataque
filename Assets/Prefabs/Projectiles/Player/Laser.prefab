@@ -152,10 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6bf9fa38f62e6a4b818849b8b52834e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shots: []
   sfx: {fileID: 8300000, guid: 6c868ceefa2fc3e49b35e030418094e4, type: 3}
   enemyProjectile: 0
   speed: 5
-  damage: 0.5
+  damage: 1
   perforates: 0
   totalHits: 0
 --- !u!61 &2893433651024242606

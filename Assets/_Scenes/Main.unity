@@ -2818,7 +2818,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1d0eca847f559ec469fde0f3aca9327e, type: 2}
+  - {fileID: 2100000, guid: 2a10d4ea38dc56c48b1d8a73c81e1905, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18414,10 +18414,17 @@ MonoBehaviour:
     enemiesRemaining: 0
     currentEnemies: 0
     spawnInterval: 0.25
-    isBoss: 1
+    isBoss: 0
     enemies:
     - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
     - {fileID: 2515920664329550235, guid: fb0eac12174223e4291a6d6a723c4de8, type: 3}
+  - totalEnemiesInWave: 1
+    enemiesRemaining: 0
+    currentEnemies: 0
+    spawnInterval: 0.25
+    isBoss: 1
+    enemies:
+    - {fileID: 7822553090850871574, guid: 636ca221b925353469a1a09973866d31, type: 3}
   timeBetweenWaves: 3
   powerupsToSpawn:
   - {fileID: 8000618613795074276, guid: dbba51b598c7e3349a7b2989da420a26, type: 3}

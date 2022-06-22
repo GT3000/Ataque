@@ -10,12 +10,13 @@ public class Projectile : MonoBehaviour
     [SerializeField] protected AudioClip sfx;
     [SerializeField] protected bool enemyProjectile;
     [SerializeField] protected float speed;
-    [SerializeField] protected float damage;
+    [SerializeField] protected int damage;
     [SerializeField] protected bool perforates;
     [SerializeField] protected int totalHits;
     protected int currentHits;
 
     public bool EnemyProjectile => enemyProjectile;
+    public int Damage => damage;
 
     // Start is called before the first frame update
     void Start()
