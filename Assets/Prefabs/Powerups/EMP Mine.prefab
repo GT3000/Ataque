@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 15
-  spawnWeight: 2
+  spawnWeight: 8
   pickupSfx: {fileID: 8300000, guid: 63828b6276d0aa349a49f80542aac148, type: 3}
   powerup: 7
   speed: 1
