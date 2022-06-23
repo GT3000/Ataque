@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour
     protected Vector3 position;
     protected Vector3 axis;
     protected bool wasSweeping;
+    [Space]
     //Ramming
     [SerializeField] protected bool rams;
     [SerializeField] protected float rammingSpeed;
@@ -39,6 +40,7 @@ public class Enemy : MonoBehaviour
     [Header("Projectiles")]
     //Firing Stats
     [SerializeField] protected bool canFire;
+    [SerializeField] protected bool canFireBackwards;
     [SerializeField] protected float minFireRate;
     [SerializeField] protected float maxFireRate;
     private bool directionSet;
@@ -54,6 +56,17 @@ public class Enemy : MonoBehaviour
     protected Vector3 screenBounds;
     protected GameObject projectileContainer;
     protected float currentTime;
+    protected Vector3 currentPlayerPos;
+
+    private void OnEnable()
+    {
+        GameEvents.PlayerPostion += GetPlayerPositon;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.PlayerPostion -= GetPlayerPositon;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -87,9 +100,7 @@ public class Enemy : MonoBehaviour
         currentTime += Time.deltaTime;
 
         Movement();
-
         Fire();
-
         Ram();
     }
 
@@ -111,7 +122,17 @@ public class Enemy : MonoBehaviour
 
     private void Fire()
     {
-        if (canFire && currentFireRate <= currentTime)
+        if (canFireBackwards && currentFireRate <= currentTime && currentPlayerPos.y > transform.position.y)
+        {
+            if (projectile != null)
+            {
+                GameObject tempProjectile = Instantiate(projectile, transform.position, quaternion.identity);
+                tempProjectile.transform.parent = projectileContainer.transform;
+                tempProjectile.GetComponent<Projectile>().FireBackwards = true;
+                currentTime = 0f;
+            }
+        }
+        else if (canFire && currentFireRate <= currentTime)
         {
             if (projectile != null)
             {
@@ -120,6 +141,12 @@ public class Enemy : MonoBehaviour
                 currentTime = 0f;
             }
         }
+    }
+    
+    private void RandomizeFireRate()
+    {
+        float randomFireRate = Random.Range(minFireRate, maxFireRate);
+        currentFireRate = randomFireRate;
     }
 
     private void Movement()
@@ -217,12 +244,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void RandomizeFireRate()
-    {
-        float randomFireRate = Random.Range(minFireRate, maxFireRate);
-        currentFireRate = randomFireRate;
-    }
-
     private void Cleanup()
     {
         GameObject tempFx = Instantiate(deathFX, transform.position, Quaternion.identity);
@@ -243,5 +264,10 @@ public class Enemy : MonoBehaviour
 
         GameEvents.EnemyDestroyed();
         GameEvents.UpdateCash(cashValue);
+    }
+
+    private void GetPlayerPositon(Vector3 playerPos)
+    {
+        currentPlayerPos = playerPos;
     }
 }

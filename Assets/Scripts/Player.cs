@@ -81,6 +81,7 @@ public class Player : MonoBehaviour
     {
         startPos = Vector3.zero;
         transform.position = startPos;
+        StartCoroutine(PingLocation());
         
         thrusterSupply = totalThrusterSupply;
         GameEvents.SetThrusterMax(totalThrusterSupply);
@@ -138,6 +139,15 @@ public class Player : MonoBehaviour
 
             transform.Translate(new Vector3(horizontalMovement, verticalMovement, 0) * currentSpeed * Time.deltaTime); 
         }
+    }
+
+    private IEnumerator PingLocation()
+    {
+        GameEvents.PlayerPostion(transform.position);
+
+        yield return new WaitForSeconds(0.1f);
+
+        StartCoroutine(PingLocation());
     }
 
     private void Thruster()

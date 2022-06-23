@@ -14,9 +14,15 @@ public class Projectile : MonoBehaviour
     [SerializeField] protected bool perforates;
     [SerializeField] protected int totalHits;
     protected int currentHits;
+    protected bool fireBackwards;
 
     public bool EnemyProjectile => enemyProjectile;
     public int Damage => damage;
+    public bool FireBackwards
+    {
+        get => fireBackwards;
+        set => fireBackwards = value;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +42,14 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            transform.Translate(Vector3.down * speed * Time.deltaTime);
+            if (fireBackwards)
+            {
+                transform.Translate(Vector3.up * speed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(Vector3.down * speed * Time.deltaTime);
+            }
         }
     }
 
