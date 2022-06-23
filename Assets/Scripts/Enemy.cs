@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected bool recycle;
     [SerializeField] protected GameObject deathFX;
     [SerializeField] protected AudioClip deathSfx;
+    protected float defaultSpeed;
     [Header("Camera Shake")]
     [SerializeField] protected float shakeAmt;
     [SerializeField] protected float shakeSlopeOff;
@@ -28,6 +29,13 @@ public class Enemy : MonoBehaviour
     protected Vector3 position;
     protected Vector3 axis;
     protected bool wasSweeping;
+    //Ramming
+    [SerializeField] protected bool rams;
+    [SerializeField] protected float rammingSpeed;
+    [SerializeField] protected float ramRange;
+    [SerializeField] protected float lengthOfRam;
+    protected bool isRamming;
+    protected float rammingTimer;
     [Header("Projectiles")]
     //Firing Stats
     [SerializeField] protected bool canFire;
@@ -37,6 +45,7 @@ public class Enemy : MonoBehaviour
     protected float currentFireRate;
     [SerializeField] protected GameObject projectile;
     [Header("Support")] 
+    //Shield
     [SerializeField] protected bool shielded;
     [SerializeField] protected GameObject shield;
     
@@ -49,6 +58,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        defaultSpeed = speed;
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
 
         projectileContainer = new GameObject(transform.name + "Projectile Container");
@@ -79,6 +89,24 @@ public class Enemy : MonoBehaviour
         Movement();
 
         Fire();
+
+        Ram();
+    }
+
+    private void FixedUpdate()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, ramRange);
+
+        if (hit.collider != null && rams && !isRamming)
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                isRamming = true;
+                rammingTimer = 0f;
+            }
+        }
+        
+        Debug.DrawRay(transform.position, Vector2.down, Color.red);
     }
 
     private void Fire()
@@ -110,6 +138,11 @@ public class Enemy : MonoBehaviour
         {
             if (recycle)
             {
+                if (rams)
+                {
+                    ResetRam();
+                }
+                
                 RandomSpawnSpot(screenBounds);
             }
             else
@@ -117,6 +150,26 @@ public class Enemy : MonoBehaviour
                 Cleanup();
             }
         }
+    }
+
+    private void Ram()
+    {
+        if (isRamming)
+        {
+            rammingTimer += Time.deltaTime;
+            speed = rammingSpeed;
+
+            if (rammingTimer >= lengthOfRam)
+            {
+                ResetRam();
+            }
+        }
+    }
+    
+    private void ResetRam()
+    {
+        isRamming = false;
+        speed = defaultSpeed;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -131,21 +184,7 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    if (!shielded)
-                    {
-                         health -= col.GetComponent<Projectile>().Damage;
-
-                        if (health < 0)
-                        {
-                            health = 0;
-                            Cleanup();
-                        } 
-                    }
-                    else
-                    {
-                        shield.SetActive(false);
-                        shielded = false;
-                    }
+                    TakeDamage(col);
                 }
             }
             
@@ -156,6 +195,25 @@ public class Enemy : MonoBehaviour
 
                 Cleanup();
             }
+        }
+    }
+
+    private void TakeDamage(Collider2D col)
+    {
+        if (!shielded)
+        {
+            health -= col.GetComponent<Projectile>().Damage;
+
+            if (health <= 0)
+            {
+                health = 0;
+                Cleanup();
+            }
+        }
+        else
+        {
+            shield.SetActive(false);
+            shielded = false;
         }
     }
 
