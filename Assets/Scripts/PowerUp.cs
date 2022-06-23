@@ -30,6 +30,17 @@ public class PowerUp : MonoBehaviour
     private float currentTime;
     
     public int SpawnWeight => spawnWeight;
+    public bool NegativePowerup => negativePowerup;
+
+    private void OnEnable()
+    {
+        GameEvents.PowerupDestroyed += DestroyPowerup;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.PowerupDestroyed -= DestroyPowerup;
+    }
 
     private void Start()
     {
@@ -68,8 +79,13 @@ public class PowerUp : MonoBehaviour
             GameEvents.PowerupPickedUp((int)powerup);
             GameEvents.PlaySfx(pickupSfx);
             
-            //TODO Pool instead of destroy
-            Destroy(gameObject);
+            DestroyPowerup();
         }
+    }
+
+    //TODO Pool instead of destroy
+    private void DestroyPowerup()
+    {
+        Destroy(gameObject);
     }
 }

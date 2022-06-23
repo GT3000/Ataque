@@ -9,6 +9,7 @@ public static class GameEvents
     public static Action PlayerDestroyed;
     public static Action PlayerHit;
     public static Action EnemyDestroyed;
+    public static Action PowerupDestroyed;
     public static Action<Vector3> PlayerPostion;
     public static Action<int> UpdateCash;
     public static Action<int> DisplayCash;

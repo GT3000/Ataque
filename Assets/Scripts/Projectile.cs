@@ -74,6 +74,15 @@ public class Projectile : MonoBehaviour
             GameEvents.PlayerHit();
             Destroy(gameObject);
         }
+
+        if (col.GetComponent<PowerUp>() != null)
+        {
+            if (!col.GetComponent<PowerUp>().NegativePowerup && enemyProjectile)
+            {
+                GameEvents.PowerupDestroyed();
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void ProjectileSfx()

@@ -46,6 +46,7 @@ public class Enemy : MonoBehaviour
     private bool directionSet;
     protected float currentFireRate;
     [SerializeField] protected GameObject projectile;
+    protected bool firedAtPickup;
     [Header("Support")] 
     //Shield
     [SerializeField] protected bool shielded;
@@ -108,12 +109,19 @@ public class Enemy : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, ramRange);
 
-        if (hit.collider != null && rams && !isRamming)
+        if (hit.collider != null )
         {
-            if (hit.collider.CompareTag("Player"))
+            if (hit.collider.CompareTag("Player") && rams && !isRamming)
             {
                 isRamming = true;
                 rammingTimer = 0f;
+            }
+
+            if (hit.collider.GetComponent<PowerUp>() && !hit.collider.GetComponent<PowerUp>().NegativePowerup && !firedAtPickup)
+            {
+                firedAtPickup = true;
+                GameObject tempProjectile = Instantiate(projectile, transform.position, quaternion.identity);
+                tempProjectile.transform.parent = projectileContainer.transform;
             }
         }
         
@@ -139,6 +147,7 @@ public class Enemy : MonoBehaviour
                 GameObject tempProjectile = Instantiate(projectile, transform.position, quaternion.identity);
                 tempProjectile.transform.parent = projectileContainer.transform;
                 currentTime = 0f;
+                firedAtPickup = false;
             }
         }
     }
