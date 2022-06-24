@@ -26,11 +26,23 @@ public class PowerUp : MonoBehaviour
     [SerializeField] protected float speed;
     [SerializeField] protected bool randomPattern;
     [SerializeField] protected bool negativePowerup;
+    protected bool moveTowardsPlayer;
+    protected Vector3 direction;
     protected Vector3 screenBounds;
     private float currentTime;
     
     public int SpawnWeight => spawnWeight;
     public bool NegativePowerup => negativePowerup;
+    public bool MoveTowardsPlayer
+    {
+        get => moveTowardsPlayer;
+        set => moveTowardsPlayer = value;
+    }
+    public Vector3 Direction
+    {
+        get => direction;
+        set => direction = value;
+    }
 
     private void OnEnable()
     {
@@ -62,14 +74,30 @@ public class PowerUp : MonoBehaviour
     private void Update()
     {
         currentTime += Time.deltaTime;
-        
-        transform.Translate(Vector3.down * speed * Time.deltaTime);
 
+        if (moveTowardsPlayer)
+        {
+            MoveTowardDirection(direction);
+        }
+        else
+        {
+            transform.Translate(Vector3.down * speed * Time.deltaTime);
+        }
+        
         if (lifetime <= currentTime)
         {
             //TODO Pool instead of destroy
             Destroy(gameObject);
         }
+    }
+
+    private void MoveTowardDirection(Vector3 targetDirection)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, targetDirection, speed * Time.deltaTime);
+
+        //transform.position = Vector3.Lerp(transform.position, targetDirection, speed * Time.deltaTime);
+
+        //transform.Translate(targetDirection.magnitude * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D col)

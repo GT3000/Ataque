@@ -108,6 +108,45 @@ public class Player : MonoBehaviour
         
         Move();
         Fire();
+        PickupCollect();
+    }
+
+    private void PickupCollect()
+    {
+        Collider2D[] hitColliders;
+        hitColliders = Physics2D.OverlapCircleAll(transform.position, 3.0f);
+        
+        if (Input.GetKey(KeyCode.C))
+        {
+            foreach (Collider2D hit in hitColliders)
+            {
+                if (hit.GetComponent<PowerUp>() != null)
+                {
+                    if (!hit.GetComponent<PowerUp>().NegativePowerup)
+                    {
+                        //Vector3 direction = transform.position - hit.transform.position;
+                        hit.GetComponent<PowerUp>().MoveTowardsPlayer = true;
+                        hit.GetComponent<PowerUp>().Direction = transform.position;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (hitColliders != null)
+            {
+                foreach (Collider2D hit in hitColliders)
+                {
+                    if (hit.GetComponent<PowerUp>() != null)
+                    {
+                        if (!hit.GetComponent<PowerUp>().NegativePowerup)
+                        {
+                            hit.GetComponent<PowerUp>().MoveTowardsPlayer = false;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void Move()
@@ -143,9 +182,12 @@ public class Player : MonoBehaviour
 
     private IEnumerator PingLocation()
     {
-        GameEvents.PlayerPostion(transform.position);
-
         yield return new WaitForSeconds(0.1f);
+
+        if (transform.position != null)
+        {
+            GameEvents.PlayerPostion(transform.position);
+        }
 
         StartCoroutine(PingLocation());
     }
