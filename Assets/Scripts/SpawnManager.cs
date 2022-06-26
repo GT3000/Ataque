@@ -14,6 +14,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] protected float timeBetweenWaves;
     protected int currentWaveIndex;
     protected bool finalWave;
+    protected bool missionOver;
 
     [Header("Powerups")] 
     [SerializeField] protected GameObject[] powerupsToSpawn;
@@ -52,11 +53,12 @@ public class SpawnManager : MonoBehaviour
             }
         }
 
-        if (finalWave && waves[currentWaveIndex].enemiesRemaining <= 0)
+        if (finalWave && waves[currentWaveIndex].enemiesRemaining <= 0 && !missionOver)
         {
             print("End mission");
             StopCoroutine(SpawnPowerups());
             StopCoroutine(SpawnEnemies());
+            StopCoroutine(CheckWave());
             //TODO End Mission Animation
         }
     }
@@ -93,7 +95,7 @@ public class SpawnManager : MonoBehaviour
         
         currentWaveIndex++;
 
-        if (currentWaveIndex <= waves.Count && !finalWave)
+        if (currentWaveIndex < waves.Count && !finalWave)
         {
             if(waves[currentWaveIndex].isBoss)
             {

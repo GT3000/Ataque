@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8368403982230477281}
   - component: {fileID: 8368403982230477280}
   - component: {fileID: 2400293990570344741}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Missile (2)
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8368403982238578342}
   - component: {fileID: 8368403982238578340}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shot
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8368403982341399223}
   - component: {fileID: 8368403982341399221}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shot
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8368403983387259848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Missile Dual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 8368403983605544705}
   - component: {fileID: 8368403983605544704}
   - component: {fileID: 4636797460024422733}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Missile (1)
   m_TagString: Projectile
   m_Icon: {fileID: 0}

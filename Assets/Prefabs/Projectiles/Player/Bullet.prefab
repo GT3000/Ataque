@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9178726963613961975}
   - component: {fileID: 9178726963613961974}
   - component: {fileID: 9178726963613961973}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bullet
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6bf9fa38f62e6a4b818849b8b52834e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shots: []
   sfx: {fileID: 8300000, guid: 8111f24d65c6015448dc9c3520fc4128, type: 3}
   enemyProjectile: 0
   speed: 3

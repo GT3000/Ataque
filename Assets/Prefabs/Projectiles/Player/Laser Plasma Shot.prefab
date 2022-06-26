@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 968930586262678445}
   - component: {fileID: 968930586262678443}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shot
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 968930586311844541}
   - component: {fileID: 968930586311844539}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shot
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 968930586764372562}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Laser Plasma Shot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 968930587433756235}
   - component: {fileID: 968930587433756234}
   - component: {fileID: 3651753599668414452}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Laser
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 968930588084645324}
   - component: {fileID: 968930588084645327}
   - component: {fileID: 4857396380298534220}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Laser
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4599505255489260209}
   - component: {fileID: 5298273541949509553}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shot
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -500,7 +500,7 @@ GameObject:
   - component: {fileID: 4842677405447245880}
   - component: {fileID: 4842677405447245881}
   - component: {fileID: 6168896300166506144}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Laser
   m_TagString: Projectile
   m_Icon: {fileID: 0}

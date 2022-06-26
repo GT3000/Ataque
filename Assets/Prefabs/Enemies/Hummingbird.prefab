@@ -147,6 +147,7 @@ MonoBehaviour:
   rammingSpeed: 0
   ramRange: 0
   lengthOfRam: 0
+  avoidsShots: 1
   canFire: 1
   canFireBackwards: 1
   minFireRate: 2

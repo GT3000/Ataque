@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1044469396}
   - component: {fileID: 8526305983612048276}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shot
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 8998223771416775709}
   - component: {fileID: 8998223771416775708}
   - component: {fileID: 2893433651024242606}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Laser
   m_TagString: Projectile
   m_Icon: {fileID: 0}

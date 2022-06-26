@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected bool recycle;
     [SerializeField] protected GameObject deathFX;
     [SerializeField] protected AudioClip deathSfx;
+    protected bool isAlive;
     protected float defaultSpeed;
     [Header("Camera Shake")]
     [SerializeField] protected float shakeAmt;
@@ -37,8 +39,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float lengthOfRam;
     protected bool isRamming;
     protected float rammingTimer;
-    [Header("Projectiles")]
+    [Space]
+    //Shot avoidance
+    [SerializeField] protected bool avoidsShots;
+    protected bool shotAvoided;
     //Firing Stats
+    [Header("Projectiles")]
     [SerializeField] protected bool canFire;
     [SerializeField] protected bool canFireBackwards;
     [SerializeField] protected float minFireRate;
@@ -74,6 +80,7 @@ public class Enemy : MonoBehaviour
     {
         defaultSpeed = speed;
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+        isAlive = true;
 
         projectileContainer = new GameObject(transform.name + "Projectile Container");
 
@@ -109,7 +116,7 @@ public class Enemy : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, ramRange);
 
-        if (hit.collider != null )
+        if (hit.collider != null && isAlive)
         {
             if (hit.collider.CompareTag("Player") && rams && !isRamming)
             {
@@ -125,7 +132,30 @@ public class Enemy : MonoBehaviour
             }
         }
         
-        Debug.DrawRay(transform.position, Vector2.down, Color.red);
+        RaycastHit2D circleHit = Physics2D.CircleCast(transform.position, 1, Vector3.down, 1 << LayerMask.NameToLayer("Projectile"));
+
+        if (circleHit != null && isAlive)
+        {
+            if (circleHit.collider.GetComponent<Projectile>() && !circleHit.collider.GetComponent<Projectile>().EnemyProjectile)
+            {
+                if (!shotAvoided && avoidsShots)
+                {
+                    float randomDirection = 0;
+                
+                    if (circleHit.point.x > transform.position.x)
+                    {
+                        randomDirection = -0.5f;
+                    }
+                    else if (circleHit.point.x < transform.position.x)
+                    {
+                        randomDirection = 0.5f;
+                    }
+                
+                    LeanTween.move(gameObject, new Vector2(transform.position.x + randomDirection, transform.position.y), 0.25f);
+                    shotAvoided = true;
+                }
+            }
+        }
     }
 
     private void Fire()
@@ -178,6 +208,11 @@ public class Enemy : MonoBehaviour
                 {
                     ResetRam();
                 }
+
+                if (avoidsShots)
+                {
+                    shotAvoided = false;
+                }
                 
                 RandomSpawnSpot(screenBounds);
             }
@@ -214,13 +249,9 @@ public class Enemy : MonoBehaviour
         {
             if (col.GetComponent<Projectile>() != null)
             {
-                if (col.GetComponent<Projectile>().EnemyProjectile)
+                if (!col.GetComponent<Projectile>().EnemyProjectile)
                 {
-                    //Ignore
-                }
-                else
-                {
-                    TakeDamage(col);
+                        TakeDamage(col);
                 }
             }
             
@@ -255,6 +286,7 @@ public class Enemy : MonoBehaviour
 
     private void Cleanup()
     {
+        isAlive = false;
         GameObject tempFx = Instantiate(deathFX, transform.position, Quaternion.identity);
         GameEvents.PlaySfx(deathSfx);
         GameEvents.CameraShake(shakeAmt, shakeSlopeOff, shakeTime);
