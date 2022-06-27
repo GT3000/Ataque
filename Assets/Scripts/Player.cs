@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using TreeEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -79,10 +80,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        startPos = Vector3.zero;
-        transform.position = startPos;
-        StartCoroutine(PingLocation());
-        
         thrusterSupply = totalThrusterSupply;
         GameEvents.SetThrusterMax(totalThrusterSupply);
         
@@ -97,6 +94,10 @@ public class Player : MonoBehaviour
         {
             screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
         }
+        
+        startPos = Vector3.zero;
+        transform.position = startPos;
+        StartCoroutine(PingLocation());
     }
 
     // Update is called once per frame
@@ -124,7 +125,6 @@ public class Player : MonoBehaviour
                 {
                     if (!hit.GetComponent<PowerUp>().NegativePowerup)
                     {
-                        //Vector3 direction = transform.position - hit.transform.position;
                         hit.GetComponent<PowerUp>().MoveTowardsPlayer = true;
                         hit.GetComponent<PowerUp>().Direction = transform.position;
                     }
@@ -184,10 +184,9 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        if (transform.position != null)
-        {
-            GameEvents.PlayerPostion(transform.position);
-        }
+        Vector3 currentPos = transform.position;
+        
+        GameEvents.PlayerPosition(currentPos);
 
         StartCoroutine(PingLocation());
     }
@@ -512,7 +511,6 @@ public class Player : MonoBehaviour
 
     private void Death()
     {
-        GameEvents.EnemyDestroyed();
         GameEvents.GameOver();
         //TODO Explosion VFX
         //TODO end game logic

@@ -94,10 +94,6 @@ public class PowerUp : MonoBehaviour
     private void MoveTowardDirection(Vector3 targetDirection)
     {
         transform.position = Vector3.MoveTowards(transform.position, targetDirection, speed * Time.deltaTime);
-
-        //transform.position = Vector3.Lerp(transform.position, targetDirection, speed * Time.deltaTime);
-
-        //transform.Translate(targetDirection.magnitude * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D col)

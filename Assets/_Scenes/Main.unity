@@ -17283,6 +17283,63 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1001 &1176622418
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387436, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7437243033652387442, guid: 1928979df7310134fac235c01ea547fa, type: 3}
+      propertyPath: m_Name
+      value: Missile Upgrade
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1928979df7310134fac235c01ea547fa, type: 3}
 --- !u!1 &1216052060
 GameObject:
   m_ObjectHideFlags: 0
@@ -18403,14 +18460,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - totalEnemiesInWave: 1
+  - totalEnemiesInWave: 15
     enemiesRemaining: 0
     currentEnemies: 0
     spawnInterval: 0.25
     isBoss: 0
     enemies:
     - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
-  - totalEnemiesInWave: 1
+  - totalEnemiesInWave: 25
     enemiesRemaining: 0
     currentEnemies: 0
     spawnInterval: 0.25
@@ -18426,6 +18483,7 @@ MonoBehaviour:
     enemies:
     - {fileID: 7822553090850871574, guid: 636ca221b925353469a1a09973866d31, type: 3}
   timeBetweenWaves: 3
+  listOfCurrentEnemies: []
   powerupsToSpawn:
   - {fileID: 8000618613795074276, guid: dbba51b598c7e3349a7b2989da420a26, type: 3}
   - {fileID: 182467416318941654, guid: 4a26a92e1a52787489501be017499da5, type: 3}

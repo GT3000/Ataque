@@ -65,14 +65,16 @@ public class Enemy : MonoBehaviour
     protected float currentTime;
     protected Vector3 currentPlayerPos;
 
+    public bool IsAlive => isAlive;
+
     private void OnEnable()
     {
-        GameEvents.PlayerPostion += GetPlayerPositon;
+        GameEvents.PlayerPosition += GetPlayerPositon;
     }
 
     private void OnDisable()
     {
-        GameEvents.PlayerPostion -= GetPlayerPositon;
+        GameEvents.PlayerPosition -= GetPlayerPositon;
     }
 
     // Start is called before the first frame update
@@ -124,7 +126,7 @@ public class Enemy : MonoBehaviour
                 rammingTimer = 0f;
             }
 
-            if (hit.collider.GetComponent<PowerUp>() && !hit.collider.GetComponent<PowerUp>().NegativePowerup && !firedAtPickup)
+            if (hit.collider.GetComponent<PowerUp>() && !hit.collider.GetComponent<PowerUp>().NegativePowerup && !firedAtPickup && canFire)
             {
                 firedAtPickup = true;
                 GameObject tempProjectile = Instantiate(projectile, transform.position, quaternion.identity);
@@ -303,7 +305,7 @@ public class Enemy : MonoBehaviour
         Destroy(projectileContainer, 5.0f);
         Destroy(gameObject, 6.0f);
 
-        GameEvents.EnemyDestroyed();
+        GameEvents.EnemyDestroyed(gameObject);
         GameEvents.UpdateCash(cashValue);
     }
 

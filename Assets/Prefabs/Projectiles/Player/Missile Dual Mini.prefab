@@ -108,6 +108,7 @@ MonoBehaviour:
   damage: 5
   perforates: 0
   totalHits: 0
+  homing: 1
 --- !u!61 &3954038073001106068
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -377,6 +378,7 @@ MonoBehaviour:
   damage: 5
   perforates: 0
   totalHits: 0
+  homing: 1
 --- !u!61 &6068211185650683034
 BoxCollider2D:
   m_ObjectHideFlags: 0

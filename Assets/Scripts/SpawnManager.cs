@@ -15,6 +15,7 @@ public class SpawnManager : MonoBehaviour
     protected int currentWaveIndex;
     protected bool finalWave;
     protected bool missionOver;
+    [SerializeField] protected List<GameObject> listOfCurrentEnemies;
 
     [Header("Powerups")] 
     [SerializeField] protected GameObject[] powerupsToSpawn;
@@ -26,10 +27,12 @@ public class SpawnManager : MonoBehaviour
         GameEvents.EnemyDestroyed += RemoveEnemies;
         GameEvents.PlayerDestroyed += StopSpawner;
         GameEvents.SpawningStarted += BeginSpawner;
+        GameEvents.PingEnemyList += GetEnemies;
     }
 
     private void OnDisable()
     {
+        GameEvents.PingEnemyList -= GetEnemies;
         GameEvents.EnemyDestroyed -= RemoveEnemies;
         GameEvents.PlayerDestroyed -= StopSpawner;
         GameEvents.SpawningStarted -= BeginSpawner;
@@ -38,7 +41,7 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        listOfCurrentEnemies = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -80,7 +83,8 @@ public class SpawnManager : MonoBehaviour
             tempEnemy.transform.parent = transform;
             waves[currentWaveIndex].currentEnemies++;
             waves[currentWaveIndex].enemiesRemaining++;
-
+            
+            listOfCurrentEnemies.Add(tempEnemy);
             yield return new WaitForSeconds(waves[currentWaveIndex].spawnInterval);
             
             StartCoroutine(SpawnEnemies());
@@ -89,8 +93,15 @@ public class SpawnManager : MonoBehaviour
         yield return null;
     }
 
+    private void GetEnemies()
+    {
+        GameEvents.GetAllCurrentEnemies(listOfCurrentEnemies);
+    }
+
     private IEnumerator CheckWave()
     {
+        listOfCurrentEnemies.Clear();
+        
         yield return new WaitForSeconds(timeBetweenWaves);
         
         currentWaveIndex++;
@@ -179,8 +190,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private void RemoveEnemies()
+    private void RemoveEnemies(GameObject enemy)
     {
+        listOfCurrentEnemies.Remove(enemy);
         waves[currentWaveIndex].enemiesRemaining--;
     }
 
