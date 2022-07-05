@@ -253,7 +253,7 @@ public class Enemy : MonoBehaviour
             {
                 if (!col.GetComponent<Projectile>().EnemyProjectile)
                 {
-                        TakeDamage(col);
+                    TakeDamage(col);
                 }
             }
             
