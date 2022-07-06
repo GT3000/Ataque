@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using TreeEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -162,8 +159,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Thruster();
-
             if (speedDurationTimer <= speedBoostDuration && speedBoostActive)
             {
                 currentSpeed = speedBoostSpeed;
@@ -172,6 +167,8 @@ public class Player : MonoBehaviour
             {
                 currentSpeed = speed;
             }
+            
+            Thruster();
 
             float horizontalMovement = Input.GetAxisRaw("Horizontal");
             float verticalMovement = Input.GetAxisRaw("Vertical");
@@ -185,8 +182,11 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         Vector3 currentPos = transform.position;
-        
-        GameEvents.PlayerPosition(currentPos);
+
+        if (currentPos != null && GameEvents.PlayerPosition != null)
+        {
+            GameEvents.PlayerPosition(currentPos);
+        }
 
         StartCoroutine(PingLocation());
     }
@@ -282,6 +282,7 @@ public class Player : MonoBehaviour
                     projectile = firepowerProjectiles[0];
                 }
                 
+                fireRate = 0.25f;
                 currentAmmo = maxAmmo;
                 GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
                 
@@ -309,6 +310,7 @@ public class Player : MonoBehaviour
                     projectile = energyProjectiles[0];
                 }
                 
+                fireRate = 0.2f;
                 currentAmmo = maxAmmo;
                 GameEvents.UpdateAmmo(currentAmmo, maxAmmo);
                 
@@ -331,6 +333,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
+                    fireRate = 0.4f;
                     currentUpgrade = 2;
                     upgradeLevel = 0;
                     projectile = missileProjectiles[0];

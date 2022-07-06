@@ -1,10 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -311,6 +305,9 @@ public class Enemy : MonoBehaviour
 
     private void GetPlayerPositon(Vector3 playerPos)
     {
-        currentPlayerPos = playerPos;
+        if (playerPos != null)
+        {
+            currentPlayerPos = playerPos;
+        }
     }
 }

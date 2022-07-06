@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Fx : MonoBehaviour
@@ -17,12 +16,6 @@ public class Fx : MonoBehaviour
         StartCoroutine(DestroyFx());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     private IEnumerator DestroyFx()
     {
         yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorClipInfo(0)[0].clip.length);

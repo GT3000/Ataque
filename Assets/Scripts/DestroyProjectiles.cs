@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Ludiq.PeekCore;
 using UnityEngine;
 
 public class DestroyProjectiles : MonoBehaviour

@@ -560,7 +560,7 @@ MonoBehaviour:
   cashValue: 25000
   projectile: {fileID: 1877768978916628127, guid: 99a724e4557b40a4db887c4e118ee218, type: 3}
   moveSpeed: 5
-  startPoint: {fileID: 0}
+  startPoint: {fileID: 4868962599236538967, guid: 7015f6f0b4aeaf545a219bc02178e701, type: 3}
   deathFX: {fileID: 6376740592698042327, guid: 3a33b700b02e89146abd7ee8f770d7f2, type: 3}
   spriteRenderer: {fileID: 5594830677552394167}
   shakeAmt: 0.15

@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum States
@@ -85,7 +82,6 @@ public class Boss : MonoBehaviour
     {
         if (other.GetComponent<Projectile>() && !other.GetComponent<Projectile>().EnemyProjectile)
         {
-            print("Hit!");
             TakeDamage(other.GetComponent<Projectile>().Damage);
         }
     }
