@@ -17,7 +17,6 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.DisplayCash += SetCash;
-        GameEvents.UpdateHealth += ChangeHealth;
         GameEvents.NewLife += DeductLives;
         GameEvents.GameOver += GameOverUI;
         GameEvents.ThrusterSupply += UpdateThrusterSlider;
@@ -28,7 +27,6 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         GameEvents.DisplayCash -= SetCash;
-        GameEvents.UpdateHealth -= ChangeHealth;
         GameEvents.NewLife -= DeductLives;
         GameEvents.GameOver -= GameOverUI;
         GameEvents.ThrusterSupply -= UpdateThrusterSlider;
@@ -101,14 +99,6 @@ public class UIManager : MonoBehaviour
             {
                 healthSprites[i].gameObject.SetActive(false);
             }
-        }
-    }
-
-    private void ChangeHealth(int health)
-    {
-        for (int i = 0; i < health; i++)
-        {
-            
         }
     }
 

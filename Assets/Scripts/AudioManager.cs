@@ -40,12 +40,6 @@ public class AudioManager : MonoBehaviour
         PickRandomTrack();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void PickRandomTrack()
     {
         int randomIndex = Random.Range(0, bgmAudioClips.Count);
