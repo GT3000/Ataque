@@ -22,6 +22,7 @@ public class Boss : MonoBehaviour
     [SerializeField] protected GameObject startPoint;
     [SerializeField] protected GameObject deathFX;
     [SerializeField] protected SpriteRenderer spriteRenderer;
+    protected bool isAlive = true;
     [Header("Camera Shake")] 
     [SerializeField] protected float shakeAmt;
     [SerializeField] protected float shakeSlopeOff;
@@ -38,7 +39,6 @@ public class Boss : MonoBehaviour
     [SerializeField] protected float p2ShotDelay;
     protected float p2FirepointsTimer;
     [SerializeField] protected List<GameObject> phase2MovementPoints;
-
     protected int currentP2Waypoint;
     protected bool inPhase1;
     protected bool inPhase2;
@@ -47,6 +47,8 @@ public class Boss : MonoBehaviour
     protected bool firing;
     protected GameObject projectileContainer;
     
+    public bool IsAlive => isAlive;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,7 +67,6 @@ public class Boss : MonoBehaviour
         
         if (currentHealth <= (maxHealth / 2) && !halfHealth)
         {
-            print("Entering 2nd Phase");
             halfHealth = true;
 
             if (bossState == States.Phase1)
@@ -80,7 +81,7 @@ public class Boss : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.GetComponent<Projectile>() && !other.GetComponent<Projectile>().EnemyProjectile)
+        if (other.GetComponent<Projectile>() && !other.GetComponent<Projectile>().EnemyProjectile && isAlive)
         {
             TakeDamage(other.GetComponent<Projectile>().Damage);
         }
@@ -281,11 +282,7 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            print("Waiting");
-            
             yield return new WaitForSeconds(6.0f);
-            
-            print("Return to Phase");
 
             if (!halfHealth)
             {
@@ -325,6 +322,8 @@ public class Boss : MonoBehaviour
 
     private IEnumerator Death()
     {
+        isAlive = false;
+        
         GameObject tempDeath = Instantiate(deathFX, transform.position, Quaternion.identity);
         GameEvents.CameraShake(shakeAmt, shakeSlopeOff, shakeTime);
 
@@ -339,7 +338,8 @@ public class Boss : MonoBehaviour
         GameEvents.EnemyDestroyed(gameObject);
         GameEvents.UpdateCash(cashValue);
 
-        yield return new WaitForSeconds(tempDeath.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0).Length);
+        yield return new WaitForSeconds(tempDeath.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length);
+        yield return new WaitForSeconds(shakeTime);
         
         GameEvents.GameOver();
     }

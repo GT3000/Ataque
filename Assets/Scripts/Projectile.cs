@@ -145,7 +145,7 @@ public class Projectile : MonoBehaviour
 
             for (int i = 0; i < enemiesOnField.Count; i++)
             {
-                if (enemiesOnField[i].GetComponent<Enemy>().IsAlive)
+                if (enemiesOnField[i].GetComponent<Enemy>().IsAlive || enemiesOnField[i].GetComponent<Boss>().IsAlive)
                 {
                     Vector3 directToTarget = enemiesOnField[i].transform.position - currentPos;
                     float dSqrToTarget = directToTarget.sqrMagnitude;

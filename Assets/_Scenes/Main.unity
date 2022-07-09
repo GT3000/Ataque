@@ -17939,14 +17939,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - totalEnemiesInWave: 15
+  - totalEnemiesInWave: 10
     enemiesRemaining: 0
     currentEnemies: 0
     spawnInterval: 0.25
     isBoss: 0
     enemies:
     - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
-  - totalEnemiesInWave: 25
+  - totalEnemiesInWave: 20
     enemiesRemaining: 0
     currentEnemies: 0
     spawnInterval: 0.25
@@ -17954,7 +17954,7 @@ MonoBehaviour:
     enemies:
     - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
     - {fileID: 2515920664329550235, guid: fb0eac12174223e4291a6d6a723c4de8, type: 3}
-  - totalEnemiesInWave: 35
+  - totalEnemiesInWave: 25
     enemiesRemaining: 0
     currentEnemies: 0
     spawnInterval: 0.25
@@ -17963,7 +17963,7 @@ MonoBehaviour:
     - {fileID: 1153932601277968650, guid: d65cfee4e3354ed4fa40b4726477e89f, type: 3}
     - {fileID: 5321675599317141548, guid: 107a8d694b6dee949ac069e54763c7e4, type: 3}
     - {fileID: 2515920664329550235, guid: fb0eac12174223e4291a6d6a723c4de8, type: 3}
-  - totalEnemiesInWave: 45
+  - totalEnemiesInWave: 30
     enemiesRemaining: 0
     currentEnemies: 0
     spawnInterval: 0.25
@@ -18238,7 +18238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7052517950069483728, guid: 528d99634453aef43bc421fe5b2d96e1, type: 3}
       propertyPath: thrusterBurnRate
-      value: 0.2
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7052517950069483728, guid: 528d99634453aef43bc421fe5b2d96e1, type: 3}
       propertyPath: coolDownLockoutTime

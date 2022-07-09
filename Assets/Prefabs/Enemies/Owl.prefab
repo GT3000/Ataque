@@ -161,7 +161,13 @@ MonoBehaviour:
   sweeps: 0
   frequency: 0
   amplitude: 0
+  rams: 0
+  rammingSpeed: 0
+  ramRange: 0
+  lengthOfRam: 0
+  avoidsShots: 0
   canFire: 1
+  canFireBackwards: 0
   minFireRate: 1.5
   maxFireRate: 3.5
   projectile: {fileID: 1877768978916628127, guid: 99a724e4557b40a4db887c4e118ee218, type: 3}
@@ -192,7 +198,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.21, y: 0.27}
+  m_Size: {x: 0.25, y: 0.15}
   m_EdgeRadius: 0
 --- !u!1 &7822553090854971866
 GameObject:

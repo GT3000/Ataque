@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected float coolDownLockoutTime;
     [SerializeField] protected GameObject ThrusterFX;
     protected float thrusterSupply;
-    protected bool onCooldown;
+    [SerializeField] protected bool onCooldown;
     protected float coolDownTimer;
     
     [Header("Weapons")]
@@ -156,19 +156,22 @@ public class Player : MonoBehaviour
             {
                 isImmobilized = false;
             }
+            
+            ThrusterFX.SetActive(false);
         }
         else
         {
             if (speedDurationTimer <= speedBoostDuration && speedBoostActive)
             {
                 currentSpeed = speedBoostSpeed;
+                ThrusterFX.SetActive(true);
             }
             else
             {
+                speedBoostActive = false;
                 currentSpeed = speed;
+                Thruster();
             }
-            
-            Thruster();
 
             float horizontalMovement = Input.GetAxisRaw("Horizontal");
             float verticalMovement = Input.GetAxisRaw("Vertical");
@@ -207,6 +210,11 @@ public class Player : MonoBehaviour
         else if(!onCooldown)
         {
             thrusterSupply += thrusterBurnRate;
+
+            if (thrusterSupply > totalThrusterSupply)
+            {
+                thrusterSupply = totalThrusterSupply;
+            }
             
             if (ThrusterFX.activeInHierarchy)
             {
@@ -237,7 +245,7 @@ public class Player : MonoBehaviour
                 onCooldown = false; 
             }
         }
-
+        
         GameEvents.ThrusterSupply(thrusterSupply);
     }
 

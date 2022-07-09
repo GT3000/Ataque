@@ -56,12 +56,12 @@ public class SpawnManager : MonoBehaviour
             }
         }
 
-        if (finalWave && waves[currentWaveIndex].enemiesRemaining <= 0 && !missionOver)
+        if (finalWave && waves[currentWaveIndex - 1].enemiesRemaining <= 0 && !missionOver)
         {
-            print("End mission");
             StopCoroutine(SpawnPowerups());
             StopCoroutine(SpawnEnemies());
             StopCoroutine(CheckWave());
+            missionOver = true;
             //TODO End Mission Animation
         }
     }

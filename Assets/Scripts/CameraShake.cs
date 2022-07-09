@@ -42,7 +42,7 @@ public class CameraShake : MonoBehaviour
         {
             cameraTransform.localPosition = originalPos + UnityEngine.Random.insideUnitSphere * shakeAmount;
             
-            shakeDuration -= Time.deltaTime * shakeSlopeOff;
+            shakeDuration -= Time.unscaledDeltaTime * shakeSlopeOff;
         }
         else
         {

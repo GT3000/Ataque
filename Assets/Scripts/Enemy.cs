@@ -1,4 +1,5 @@
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -130,7 +131,7 @@ public class Enemy : MonoBehaviour
         
         RaycastHit2D circleHit = Physics2D.CircleCast(transform.position, 1, Vector3.down, 1 << LayerMask.NameToLayer("Projectile"));
 
-        if (circleHit != null && isAlive)
+        if (isAlive)
         {
             if (circleHit.collider.GetComponent<Projectile>() && !circleHit.collider.GetComponent<Projectile>().EnemyProjectile)
             {
@@ -156,26 +157,30 @@ public class Enemy : MonoBehaviour
 
     private void Fire()
     {
-        if (canFireBackwards && currentFireRate <= currentTime && currentPlayerPos.y > transform.position.y)
+        if (IsAlive)
         {
-            if (projectile != null)
+            if (canFireBackwards && currentFireRate <= currentTime && currentPlayerPos.y > transform.position.y)
             {
-                GameObject tempProjectile = Instantiate(projectile, transform.position, quaternion.identity);
-                tempProjectile.transform.parent = projectileContainer.transform;
-                tempProjectile.GetComponent<Projectile>().FireBackwards = true;
-                currentTime = 0f;
+                if (projectile != null)
+                {
+                    GameObject tempProjectile = Instantiate(projectile, transform.position, quaternion.identity);
+                    tempProjectile.transform.parent = projectileContainer.transform;
+                    tempProjectile.GetComponent<Projectile>().FireBackwards = true;
+                    currentTime = 0f;
+                }
+            }
+            else if (canFire && currentFireRate <= currentTime)
+            {
+                if (projectile != null)
+                {
+                    GameObject tempProjectile = Instantiate(projectile, transform.position, quaternion.identity);
+                    tempProjectile.transform.parent = projectileContainer.transform;
+                    currentTime = 0f;
+                    firedAtPickup = false;
+                }
             }
         }
-        else if (canFire && currentFireRate <= currentTime)
-        {
-            if (projectile != null)
-            {
-                GameObject tempProjectile = Instantiate(projectile, transform.position, quaternion.identity);
-                tempProjectile.transform.parent = projectileContainer.transform;
-                currentTime = 0f;
-                firedAtPickup = false;
-            }
-        }
+        
     }
     
     private void RandomizeFireRate()

@@ -565,7 +565,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 5594830677552394167}
   shakeAmt: 0.15
   shakeSlopeOff: 0.5
-  shakeTime: 1.25
+  shakeTime: 1
   phase1Firepoints:
   - {fileID: 1548721700}
   - {fileID: 199649753}
